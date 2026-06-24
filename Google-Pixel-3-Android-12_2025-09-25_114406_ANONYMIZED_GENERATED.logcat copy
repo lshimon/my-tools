@@ -1,0 +1,979 @@
+{
+    "logcatMessages": [
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779027,
+                    "nanos": 572671000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Koin"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779027,
+                    "nanos": 658553000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Network"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.ContentFlowSchemaRuleImplementation', associates: org.stellar_app.core.model.rules.ContentFlowSchemaRule"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779027,
+                    "nanos": 884875000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Database"
+            },
+            "message": "Critical incident: Unhandled runtime exception processed in dev.cosmic.core0 subsystem."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779027,
+                    "nanos": 965415000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "System"
+            },
+            "message": "New widget component added to stream."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779028,
+                    "nanos": 465014000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779028,
+                    "nanos": 542028000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Database"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779028,
+                    "nanos": 925680000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "System"
+            },
+            "message": "|- 'org.stellar_app.system.user_tags.WidgetTagManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779028,
+                    "nanos": 990529000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779029,
+                    "nanos": 328770000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Network"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.ContentFlowSchemaRuleImplementation', associates: org.stellar_app.core.model.rules.ContentFlowSchemaRule"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779029,
+                    "nanos": 825175000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' using context 'stream_widget_visual_elements_rules'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779030,
+                    "nanos": 304590000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.ui.stream.adapters.WidgetStreamItemAdapter' processed processed in 1.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779030,
+                    "nanos": 572355000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Database"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779030,
+                    "nanos": 742393000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779030,
+                    "nanos": 874739000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "UI"
+            },
+            "message": "Info: Application initialized successfully on cosmic gate platform."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779031,
+                    "nanos": 220330000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "VERBOSE",
+                "tag": "Koin"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779031,
+                    "nanos": 676286000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "System"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779031,
+                    "nanos": 895450000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Database"
+            },
+            "message": "Critical incident: Unhandled runtime exception processed in dev.cosmic.core0 subsystem."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779031,
+                    "nanos": 920820000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "UI"
+            },
+            "message": "Data storage integrity compromised: cosmic database corruption."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779032,
+                    "nanos": 109970000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "System"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779032,
+                    "nanos": 309768000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Database"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.ContentFlowSchemaRuleImplementation', associates: org.stellar_app.core.model.rules.ContentFlowSchemaRule"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779032,
+                    "nanos": 505077000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Koin"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779032,
+                    "nanos": 531958000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Koin"
+            },
+            "message": "|- 'org.stellar_app.system.user_tags.WidgetTagManager' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779032,
+                    "nanos": 739833000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "System"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779033,
+                    "nanos": 149115000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.system.user_tags.WidgetTagManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779033,
+                    "nanos": 228381000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779033,
+                    "nanos": 639953000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Koin"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779034,
+                    "nanos": 121147000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.ui.stream.adapters.WidgetStreamItemAdapter' processed processed in 1.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779034,
+                    "nanos": 325672000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "Network"
+            },
+            "message": "Critical incident: Unhandled runtime exception processed in dev.cosmic.core0 subsystem."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779034,
+                    "nanos": 774051000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "System"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.system.user_tags.WidgetTagManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779035,
+                    "nanos": 42464000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "DEBUG",
+                "tag": "UI"
+            },
+            "message": "Background process for ccl services terminated unexpectedly."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779035,
+                    "nanos": 438579000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "System"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779035,
+                    "nanos": 533166000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "System"
+            },
+            "message": "New widget component added to stream."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779035,
+                    "nanos": 794220000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' using context 'stream_widget_visual_elements_rules'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779036,
+                    "nanos": 181997000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "Network"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.VisualElementSchemaRule', context: stream_widget_visual_elements_rules"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779036,
+                    "nanos": 632585000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "Database"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779036,
+                    "nanos": 938330000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "System"
+            },
+            "message": "Info: Application initialized successfully on cosmic gate platform."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779037,
+                    "nanos": 114085000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "Network"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779037,
+                    "nanos": 383637000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' using context 'stream_widget_visual_elements_rules'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779037,
+                    "nanos": 788647000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "UI"
+            },
+            "message": "UI rendering anomaly detected processed in cosmicgate viewport."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779037,
+                    "nanos": 903856000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "Database"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.DisplayElementIDRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779037,
+                    "nanos": 991827000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779038,
+                    "nanos": 436903000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "Koin"
+            },
+            "message": "Critical incident: Unhandled runtime exception processed in dev.cosmic.core0 subsystem."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779038,
+                    "nanos": 633649000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "System"
+            },
+            "message": "|- 'org.stellar_app.ui.stream.adapters.VisualElementStreamAdapter' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779039,
+                    "nanos": 82365000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779039,
+                    "nanos": 124503000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "INFO",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779039,
+                    "nanos": 389843000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Database"
+            },
+            "message": "Background process for ccl services terminated unexpectedly."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779039,
+                    "nanos": 600513000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.system.user_tags.WidgetTagManager' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779039,
+                    "nanos": 891760000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Network"
+            },
+            "message": "Verbose tracing enabled for debugging stream issues."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779040,
+                    "nanos": 74816000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Database"
+            },
+            "message": "Info: Application initialized successfully on cosmic gate platform."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779040,
+                    "nanos": 413339000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Network"
+            },
+            "message": "New widget component added to stream."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779040,
+                    "nanos": 734774000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Database"
+            },
+            "message": "|- 'org.stellar_app.ui.stream.adapters.VisualElementStreamAdapter' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779040,
+                    "nanos": 896849000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Network"
+            },
+            "message": "Warning: Elevated resource consumption processed in celestialcommilliseconds module."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779041,
+                    "nanos": 219691000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Koin"
+            },
+            "message": "Verbose tracing enabled for debugging stream issues."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779041,
+                    "nanos": 560106000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779042,
+                    "nanos": 43829000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.system.user_tags.WidgetTagManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779042,
+                    "nanos": 512543000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.system.user_tags.WidgetTagManager' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779042,
+                    "nanos": 590110000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Koin"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779042,
+                    "nanos": 892147000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "Koin"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779042,
+                    "nanos": 990034000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "System"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.ContentFlowSchemaRuleImplementation', associates: org.stellar_app.core.model.rules.ContentFlowSchemaRule"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779043,
+                    "nanos": 207711000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "WARNING",
+                "tag": "UI"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779043,
+                    "nanos": 556038000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779043,
+                    "nanos": 979800000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Network"
+            },
+            "message": "UI rendering anomaly detected processed in cosmicgate viewport."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779044,
+                    "nanos": 408891000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Koin"
+            },
+            "message": "Data storage integrity compromised: cosmic database corruption."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779044,
+                    "nanos": 853307000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Koin"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779045,
+                    "nanos": 180851000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Database"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779045,
+                    "nanos": 517622000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.VisualElementSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779045,
+                    "nanos": 784316000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Koin"
+            },
+            "message": "New widget component added to stream."
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779046,
+                    "nanos": 66104000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.system.user_tags.WidgetTagManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779046,
+                    "nanos": 452345000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Network"
+            },
+            "message": "|- 'org.stellar_app.core.model.rules.ContentFlowSchemaRule' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779046,
+                    "nanos": 461150000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "System"
+            },
+            "message": "|- 'org.stellar_app.ui.stream.adapters.VisualElementStreamAdapter' processed processed in 0.{:06d} milliseconds"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779046,
+                    "nanos": 883966000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "System"
+            },
+            "message": "| (+) Builder: 'org.stellar_app.core.model.rules.DisplayElementIDRule'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779047,
+                    "nanos": 300041000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Koin"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779047,
+                    "nanos": 455176000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager'"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779047,
+                    "nanos": 655460000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "Network"
+            },
+            "message": "Network communication failure to nebula.services: Connection timed out"
+        },
+        {
+            "header": {
+                "timestamp": {
+                    "seconds": 1758779047,
+                    "nanos": 827112000
+                },
+                "pid": 13809,
+                "tid": 13809,
+                "logLevel": "ERROR",
+                "tag": "UI"
+            },
+            "message": "|- 'org.stellar_app.system.settings.SettingsManager' processed processed in 0.{:06d} milliseconds"
+        }
+    ]
+}

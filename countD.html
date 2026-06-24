@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Countdown Timer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        #timer {
+            font-size: 48px;
+            margin: 20px 0;
+            transition: color 0.3s;
+        }
+        .overtime {
+            color: #ff0000;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            font-size: 24px;
+            text-align: center;
+            padding: 10px;
+            width: 180px;
+            border: 2px solid #4CAF50;
+            border-radius: 5px;
+            background-color: #fff;
+            font-family: monospace;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #stopButton {
+            background-color: #f44336;
+            display: none;
+        }
+        #stopButton:hover {
+            background-color: #d32f2f;
+        }
+        .format-selector {
+            margin: 10px 0;
+        }
+        .radio-group {
+            margin: 10px 0;
+        }
+        .radio-group label {
+            margin: 0 10px;
+            cursor: pointer;
+        }
+        #timeUpControls {
+            display: none;
+        }
+        #continueButton {
+            background-color: #2196F3;
+        }
+        #continueButton:hover {
+            background-color: #0b7dda;
+        }
+        #stopButton2 {
+            background-color: #f44336;
+        }
+        #stopButton2:hover {
+            background-color: #d32f2f;
+        }
+        
+        /* Visual alert overlay */
+        #visualAlert {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 0, 0, 0.3);
+            z-index: 1000;
+            animation: pulse 1s infinite;
+        }
+        
+        #alertContent {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            min-width: 300px;
+        }
+        
+        #alertContent h2 {
+            color: #f44336;
+            font-size: 28px;
+            margin-top: 0;
+        }
+        
+        @keyframes pulse {
+            0% { background-color: rgba(255, 0, 0, 0.3); }
+            50% { background-color: rgba(255, 0, 0, 0.5); }
+            100% { background-color: rgba(255, 0, 0, 0.3); }
+        }
+        
+        .blink {
+            animation: blinkText 0.5s infinite;
+        }
+        
+        @keyframes blinkText {
+            0% { opacity: 1; }
+            50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Smart Countdown Timer</h1>
+
+    <div class="radio-group">
+        <label>
+            <input type="radio" name="timeFormat" value="withSeconds" checked>
+            Include Seconds (HH:MM:SS)
+        </label>
+        <label>
+            <input type="radio" name="timeFormat" value="withoutSeconds">
+            Hours & Minutes Only (HH:MM)
+        </label>
+    </div>
+
+    <p>Enter time dynamically:</p>
+    <input type="text" id="timeInput" placeholder="Enter digits">
+    <div id="preview">00:00:00</div>
+
+    <br><br>
+    <div id="mainControls">
+        <button id="startButton" onclick="startTimer()">Start Timer</button>
+        <button id="stopButton" onclick="stopTimer()">Stop</button>
+    </div>
+    
+    <div id="timeUpControls">
+        <button id="continueButton" onclick="continueTimer()">Continue</button>
+        <button id="stopButton2" onclick="stopTimer()">Stop</button>
+    </div>
+
+    <div id="timer">00:00:00</div>
+    
+    <!-- Visual alert overlay -->
+    <div id="visualAlert">
+        <div id="alertContent">
+            <h2 class="blink">TIME'S UP!</h2>
+            <div id="alertTimer" style="font-size: 36px; margin: 20px 0;">00:00:00</div>
+            <div>
+                <button id="alertContinueBtn" onclick="continueTimer()">Continue</button>
+                <button id="alertStopBtn" onclick="stopTimer()">Stop</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio elements for different sounds -->
+    <audio id="alarmSound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    
+    <audio id="overtimeSound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/953/953-preview.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        // Timer variables
+        let countdown;
+        let overtimeInterval;
+        let originalTotalSeconds = 0;
+        let overtimeSeconds = 0;
+        let includeSeconds = true;
+        let originalTimerValue = "";
+        let alarmSound = document.getElementById("alarmSound");
+        let overtimeSound = document.getElementById("overtimeSound");
+        let originalTitle = document.title;
+        let titleInterval;
+        let timerRunning = false;
+        let notificationInterval;
+        
+        // Request notification permission on page load
+        if (Notification.permission !== 'granted' && Notification.permission !== 'denied') {
+            Notification.requestPermission();
+        }
+
+        // Input formatting logic
+        const timeInputField = document.getElementById("timeInput");
+        const previewElement = document.getElementById("preview");
+        const timerDisplay = document.getElementById("timer");
+        
+        // Set up radio button event listeners
+        document.querySelectorAll('input[name="timeFormat"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                includeSeconds = this.value === 'withSeconds';
+                updatePreview(); // Update preview when format changes
+            });
+        });
+        
+        // Handle Enter key press
+        timeInputField.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                startTimer();
+            }
+        });
+        
+        timeInputField.addEventListener("input", function() {
+            // Get only digits from input
+            let numbers = this.value.replace(/[^0-9]/g, "");
+            
+            // Limit to appropriate number of digits (4 for HH:MM, 6 for HH:MM:SS)
+            const maxDigits = includeSeconds ? 6 : 4;
+            if (numbers.length > maxDigits) {
+                numbers = numbers.slice(0, maxDigits);
+                this.value = numbers;
+            }
+            
+            updatePreview(numbers);
+        });
+        
+        function updatePreview(numbers = timeInputField.value.replace(/[^0-9]/g, "")) {
+            let hours = "00";
+            let minutes = "00";
+            let seconds = "00";
+            
+            if (includeSeconds) {
+                // Format with seconds (HH:MM:SS)
+                if (numbers.length <= 2) {
+                    // For 1-2 digits, assign to seconds
+                    seconds = numbers.padStart(2, "0");
+                } else if (numbers.length <= 4) {
+                    // For 3-4 digits, assign to minutes and seconds
+                    seconds = numbers.slice(-2).padStart(2, "0");
+                    minutes = numbers.slice(0, -2).padStart(2, "0");
+                } else {
+                    // For 5-6 digits, assign to hours, minutes, and seconds
+                    seconds = numbers.slice(-2).padStart(2, "0");
+                    minutes = numbers.slice(-4, -2).padStart(2, "0");
+                    hours = numbers.slice(0, -4).padStart(2, "0");
+                }
+                
+                // Update preview display
+                previewElement.textContent = `${hours}:${minutes}:${seconds}`;
+            } else {
+                // Format without seconds (HH:MM)
+                if (numbers.length <= 2) {
+                    // For 1-2 digits, assign to minutes
+                    minutes = numbers.padStart(2, "0");
+                } else {
+                    // For 3-4 digits, assign to hours and minutes
+                    minutes = numbers.slice(-2).padStart(2, "0");
+                    hours = numbers.slice(0, -2).padStart(2, "0");
+                }
+                
+                // Update preview display
+                previewElement.textContent = `${hours}:${minutes}:00`;
+            }
+        }
+
+        // Start timer
+        function startTimer() {
+            stopAlarm();
+            resetTimerAppearance();
+            hideVisualAlert();
+            stopNotifications();
+            
+            // Get the formatted time from the preview
+            const timeString = previewElement.textContent;
+            originalTimerValue = timeString; // Store for restarting
+            
+            const timeParts = timeString.split(":");
+            const hours = parseInt(timeParts[0], 10) || 0;
+            const minutes = parseInt(timeParts[1], 10) || 0;
+            const seconds = parseInt(timeParts[2], 10) || 0;
+
+            originalTotalSeconds = hours * 3600 + minutes * 60 + seconds;
+
+            if (originalTotalSeconds <= 0) {
+                alert("Please enter a valid time.");
+                return;
+            }
+
+            clearInterval(countdown); // Clear any running timer
+            clearInterval(overtimeInterval); // Clear any overtime interval
+            
+            document.getElementById("timeUpControls").style.display = "none";
+            document.getElementById("stopButton").style.display = "inline";
+            timerRunning = true;
+            
+            startCountdown(originalTotalSeconds); // Start the countdown
+        }
+        
+        // Stop the timer
+        function stopTimer() {
+            clearInterval(countdown);
+            clearInterval(overtimeInterval);
+            stopAlarm();
+            resetTimerAppearance();
+            hideVisualAlert();
+            stopNotifications();
+            
+            // Reset UI
+            document.getElementById("stopButton").style.display = "none";
+            document.getElementById("timeUpControls").style.display = "none";
+            document.getElementById("timer").textContent = "00:00:00";
+            timerRunning = false;
+        }
+
+        // Countdown logic
+        function startCountdown(totalSeconds) {
+            updateTimerDisplay(totalSeconds); // Update display immediately
+            countdown = setInterval(() => {
+                totalSeconds--;
+                updateTimerDisplay(totalSeconds);
+
+                if (totalSeconds <= 0) {
+                    clearInterval(countdown);
+                    timeIsUp();
+                }
+            }, 1000);
+        }
+        
+        function timeIsUp() {
+            timerRunning = false;
+            document.getElementById("stopButton").style.display = "none";
+            
+            // Play alarm (if possible)
+            playMainAlarm();
+            
+            // Change title and make it flash
+            startTitleFlashing();
+            
+            // Show visual alert
+            showVisualAlert();
+            
+            // Send persistent browser notifications
+            startRepeatedNotifications();
+            
+            // Try to focus window (helps in some browsers)
+            window.focus();
+            
+            // Update UI
+            document.getElementById("timeUpControls").style.display = "block";
+        }
+        
+        // Visual alert functions
+        function showVisualAlert() {
+            const visualAlert = document.getElementById("visualAlert");
+            const alertTimer = document.getElementById("alertTimer");
+            
+            // Update timer display in alert
+            alertTimer.textContent = timerDisplay.textContent;
+            
+            // Show the visual alert
+            visualAlert.style.display = "block";
+        }
+        
+        function hideVisualAlert() {
+            document.getElementById("visualAlert").style.display = "none";
+        }
+
+        // Overtime logic
+        function continueTimer() {
+            stopAlarm();
+            hideVisualAlert();
+            stopNotifications();
+            clearInterval(countdown);
+            clearInterval(overtimeInterval);
+            
+            document.getElementById("timeUpControls").style.display = "none";
+            document.getElementById("stopButton").style.display = "inline";
+            timerRunning = true;
+            
+            // Reset overtime counter
+            overtimeSeconds = 0;
+            
+            // Start tracking overtime
+            timerDisplay.classList.add("overtime");
+            
+            // Start counting overtime
+            countdown = setInterval(() => {
+                overtimeSeconds++;
+                updateTimerDisplay(-overtimeSeconds);
+            }, 1000);
+            
+            // Set up reminder at original interval
+            overtimeInterval = setInterval(() => {
+                playOvertimeSound();
+                startTitleFlashing("⏰ Overtime Reminder");
+                showVisualAlert();
+                showNotification("⏰ Overtime Reminder!", "You've been in overtime for a while.");
+            }, originalTotalSeconds * 1000);
+        }
+        
+        function resetTimerAppearance() {
+            timerDisplay.classList.remove("overtime");
+            stopTitleFlashing();
+            document.title = originalTitle;
+        }
+
+        // Timer display logic
+        function updateTimerDisplay(totalSeconds) {
+            const isNegative = totalSeconds < 0;
+            const absSeconds = Math.abs(totalSeconds);
+            
+            const hours = Math.floor(absSeconds / 3600);
+            const minutes = Math.floor((absSeconds % 3600) / 60);
+            const seconds = absSeconds % 60;
+
+            let display = `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+            if (isNegative) {
+                display = "-" + display;
+            }
+            
+            timerDisplay.textContent = display;
+            
+            // Also update alert timer if visible
+            if (document.getElementById("visualAlert").style.display === "block") {
+                document.getElementById("alertTimer").textContent = display;
+            }
+        }
+        
+        // Alarm functions
+        function playMainAlarm() {
+            try {
+                alarmSound.loop = true;
+                alarmSound.currentTime = 0;
+                alarmSound.play().catch(error => console.log("Audio play failed:", error));
+            } catch (error) {
+                console.log("Cannot play alarm sound:", error);
+            }
+        }
+        
+        function playOvertimeSound() {
+            try {
+                // Play the gentler overtime sound once
+                overtimeSound.loop = false; 
+                overtimeSound.currentTime = 0;
+                overtimeSound.play().catch(error => console.log("Audio play failed:", error));
+            } catch (error) {
+                console.log("Cannot play overtime sound:", error);
+            }
+        }
+        
+        function stopAlarm() {
+            try {
+                alarmSound.pause();
+                alarmSound.currentTime = 0;
+                overtimeSound.pause();
+                overtimeSound.currentTime = 0;
+            } catch (error) {
+                console.log("Error stopping sounds:", error);
+            }
+        }
+        
+        // Title flashing for notification
+        function startTitleFlashing(message = "TIME'S UP!") {
+            stopTitleFlashing(); // Clear any existing interval
+            let isAlternate = false;
+            titleInterval = setInterval(() => {
+                document.title = isAlternate ? `⏰ ${message} ⏰` : `🔔 ${message} 🔔`;
+                isAlternate = !isAlternate;
+            }, 1000);
+        }
+        
+        function stopTitleFlashing() {
+            clearInterval(titleInterval);
+            document.title = originalTitle;
+        }
+        
+        // Enhanced notification system for office environments
+        function startRepeatedNotifications() {
+            // Clear any existing notifications first
+            stopNotifications();
+            
+            // Send initial notification
+            showNotification("⏰ TIME'S UP! ⏰", "Your timer has finished! Click to return to the timer.");
+            
+            // Set interval to send repeated notifications if user doesn't respond
+            notificationInterval = setInterval(() => {
+                showNotification("⏰ TIME'S UP! ⏰", "Your timer has finished! Click to return to the timer.");
+            }, 15000); // Send a new notification every 15 seconds
+        }
+        
+        function showNotification(title = "⏰ Time's Up! ⏰", body = "Your timer has finished!") {
+            if (Notification.permission === "granted") {
+                const notification = new Notification(title, {
+                    body: body,
+                    icon: "https://img.icons8.com/color/48/000000/alarm-clock--v1.png",
+                    requireInteraction: true, // Keep notification visible until user interacts
+                    vibrate: [200, 100, 200] // Vibration pattern for mobile devices
+                });
+                
+                notification.onclick = function() {
+                    window.focus();
+                    window.open(window.location.href, '_blank'); // This helps bring focus to timer tab
+                    hideVisualAlert();
+                    this.close();
+                };
+            }
+        }
+        
+        function stopNotifications() {
+            clearInterval(notificationInterval);
+        }
+        
+        // Check for visibility changes
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState === 'visible' && 
+                document.getElementById("timeUpControls").style.display === "block") {
+                // Tab is now visible and timer is up - show visual alert again
+                showVisualAlert();
+            }
+        });
+    </script>
+</body>
+</html>

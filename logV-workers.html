@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        textarea:focus {
+            outline: 2px solid #007bff;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        input:focus {
+            outline: 2px solid #007bff;
+        }
+        .log-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .event-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+        }
+        .event-table th, .event-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .event-table th {
+            background-color: #f4f4f4;
+            font-weight: bold;
+        }
+        mark {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .clear-btn {
+            display: inline-block;
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #333;
+        }
+        .clear-btn:hover {
+            background-color: #ddd;
+        }
+        .control-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+        .event-header {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .worker-result { /* Style for the worker result section */
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h2>Log Formatter</h2>
+
+    <!-- Controls above textarea -->
+    <div class="control-container">
+        <button class="clear-btn" onclick="clearLogInput()">Clear</button>
+    </div>
+
+    <textarea id="logInput" placeholder="Paste your log here..." oninput="cleanInput()"></textarea>
+    <input id="searchInput" type="text" oninput="searchLog()" placeholder="Enter text to search...">
+
+    <div id="logOutput" class="log-container">
+        <!-- Formatted log will be inserted here -->
+        <div id="workerResult" class="worker-result"></div>
+    </div>
+
+    <script>
+        function cleanInput() {
+            const logInput = document.getElementById("logInput");
+            logInput.value = logInput.value.trim();
+            formatLog();
+        }
+
+        function formatLog() {
+            const input = document.getElementById("logInput").value.trim();
+            const logOutput = document.getElementById("logOutput");
+            const workerResultDiv = document.getElementById("workerResult"); // Get the worker result div
+            logOutput.innerHTML = ""; // Clear the log output
+            workerResultDiv.innerHTML = ""; // Clear the worker result output
+
+            if (!input) return;
+
+            const lines = input.split('\n');
+            let currentEvent = null;
+            let eventData = [];
+            let workerResult = null; // Variable to store worker result
+
+            for (const line of lines) {
+                const trimmedLine = line.trim();
+
+                if (trimmedLine.startsWith("Recently completed work:")) {
+                    if (currentEvent) {
+                        createEventTable(currentEvent, eventData, logOutput);
+                    }
+                    currentEvent = "Completed";
+                    eventData = [];
+                } else if (trimmedLine.startsWith("Running work:")) {
+                    if (currentEvent) {
+                        createEventTable(currentEvent, eventData, logOutput);
+                    }
+                    currentEvent = "Running";
+                    eventData = [];
+                } else if (trimmedLine.startsWith("Enqueued work:")) {
+                    if (currentEvent) {
+                        createEventTable(currentEvent, eventData, logOutput);
+                    }
+                    currentEvent = "Enqueued";
+                    eventData = [];
+                } else if (trimmedLine.includes("Worker result SUCCESS for Work")) {
+                     workerResult = trimmedLine; //Store the complete line
+
+                     const workerResultMatch = trimmedLine.match(/id=([^,]+), tags=\{(.+?)\}/);
+
+                     if (workerResultMatch) {
+                         const workerId = workerResultMatch[1].trim();
+                         const workerTags = workerResultMatch[2].trim();
+
+                         // Create a paragraph element to display the worker result
+                         const resultParagraph = document.createElement("p");
+                         resultParagraph.innerHTML = `<b>Worker Result:</b> Worker ID: ${workerId}, Tags: ${workerTags}`;
+                         workerResultDiv.appendChild(resultParagraph); // Append result to the div
+                    }
+                 }
+                else if (trimmedLine.includes("Id \t Class Name\t Job Id\t State\t Unique Name\t Tags")) {
+                    // Skip the header line
+                    continue;
+
+                } else if (trimmedLine.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}.*/)) {  //Matches the UUID
+                    // Process the line containing the work data
+                    const parts = trimmedLine.split('\t');  //Splits the data by tab
+
+                    if (parts.length >= 6) {
+                        eventData.push({
+                            "Id": parts[0].trim(),
+                            "Class Name": parts[1].trim(),
+                            "Job Id": parts[2].trim(),
+                            "State": parts[3].trim(),
+                            "Unique Name": parts[4].trim(),
+                            "Tags": parts[5].trim()
+                        });
+                    }
+                }
+            }
+
+            if (currentEvent) {
+                createEventTable(currentEvent, eventData, logOutput);
+            }
+
+
+        }
+
+        function createEventTable(eventType, eventData, logOutput) {
+            if (eventData.length === 0) return;
+
+            const table = document.createElement("table");
+            table.className = "event-table";
+            const header = document.createElement("h3");
+            header.className = "event-header";
+
+            switch (eventType) {
+                case "Completed":
+                    header.textContent = "Recently Completed Work";
+                    break;
+                case "Running":
+                    header.textContent = "Running Work";
+                    break;
+                case "Enqueued":
+                    header.textContent = "Enqueued Work";
+                    break;
+                default:
+                    header.textContent = "Unknown Event";
+            }
+
+            logOutput.appendChild(header);
+
+            const thead = document.createElement("thead");
+            const headerRow = document.createElement("tr");
+
+            // Get all unique keys to use as headers
+            const headers = Object.keys(eventData[0]);
+            headers.forEach(key => {
+                const th = document.createElement("th");
+                th.textContent = key;
+                headerRow.appendChild(th);
+            });
+
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement("tbody");
+
+            eventData.forEach(item => {
+                const row = document.createElement("tr");
+
+                headers.forEach(key => {
+                    const td = document.createElement("td");
+                    td.textContent = item[key] || "";
+                    row.appendChild(td);
+                });
+
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(tbody);
+            logOutput.appendChild(table);
+        }
+
+        function searchLog() {
+             const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
+            const tables = document.querySelectorAll(".event-table");
+            const workerResultDiv = document.getElementById("workerResult");
+
+            // Search in tables
+            tables.forEach(table => {
+                const rows = table.querySelectorAll("tbody tr");
+                let tableHasMatches = false;
+
+                rows.forEach(row => {
+                    let rowHasMatches = false;
+                    const cells = row.querySelectorAll("td");
+
+                    cells.forEach(cell => {
+                        cell.innerHTML = cell.textContent;
+                        const cellText = cell.textContent.toLowerCase();
+
+                        if (searchTerm && cellText.includes(searchTerm)) {
+                            const highlightedText = highlightMatches(cell.textContent, searchTerm);
+                            cell.innerHTML = highlightedText;
+                            rowHasMatches = true;
+                            tableHasMatches = true;
+                        }
+                    });
+
+                    row.style.display = rowHasMatches || !searchTerm ? "" : "none";
+                });
+
+                table.style.display = tableHasMatches || !searchTerm ? "table" : "none";
+                const tableHeader = table.previousElementSibling;
+                if (tableHeader && tableHeader.classList.contains("event-header")) {
+                    tableHeader.style.display = tableHasMatches || !searchTerm ? "" : "none";
+                }
+            });
+
+            // Search in Worker Result
+            let workerResultMatches = false;
+            if (workerResultDiv.textContent.toLowerCase().includes(searchTerm) && searchTerm) {
+                workerResultMatches = true;
+                workerResultDiv.innerHTML = highlightMatches(workerResultDiv.innerHTML, searchTerm);
+            } else {
+                workerResultDiv.innerHTML = workerResultDiv.textContent; // Reset highlighting
+            }
+            workerResultDiv.style.display = workerResultMatches || !searchTerm ? "" : "none";
+
+            const anyTableVisible = Array.from(document.querySelectorAll(".event-table")).some(table => table.style.display === "table");
+            const anyWorkerResultVisible = workerResultDiv.style.display === "";
+
+            displayErrorIfNoMatches(anyTableVisible || anyWorkerResultVisible, searchTerm);
+        }
+
+
+        function highlightMatches(text, searchTerm) {
+            const regex = new RegExp(searchTerm, "gi");
+            return text.replace(regex, match => `<mark>${match}</mark>`);
+        }
+
+        function displayErrorIfNoMatches(hasMatches, searchTerm) {
+            const logOutput = document.getElementById("logOutput");
+            const errorElementId = "searchError";
+
+            const existingError = document.getElementById(errorElementId);
+            if (existingError) {
+                existingError.remove();
+            }
+
+            if (searchTerm && !hasMatches) {
+                const errorMessage = document.createElement("div");
+                errorMessage.id = errorElementId;
+                errorMessage.className = "error-message";
+                errorMessage.textContent = "No results found for your search.";
+                logOutput.appendChild(errorMessage);
+            }
+        }
+
+        function clearLogInput() {
+            const logInput = document.getElementById("logInput");
+            logInput.value = "";
+            document.getElementById("logOutput").innerHTML = "";
+            document.getElementById("workerResult").innerHTML = ""; // Clear worker result too
+
+            const existingError = document.getElementById("searchError");
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+
+        document.getElementById("logInput").addEventListener("input", formatLog);
+    </script>
+</body>
+</html>

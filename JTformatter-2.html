@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jira Bug Ticket Formatter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      resize: vertical;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 20px;
+      margin-right: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Jira Ticket Formatter</h2>
+
+  <label for="title">Title</label>
+  <textarea id="title" style="height: 40px; resize: both;"></textarea>
+
+  <label for="description">Description</label>
+  <textarea id="description"></textarea>
+
+  <label for="steps">Steps to Reproduce</label>
+  <textarea id="steps"></textarea>
+
+  <label for="actual">Actual Result</label>
+  <textarea id="actual"></textarea>
+
+  <label for="expected">Expected Result</label>
+  <textarea id="expected"></textarea>
+
+  <button onclick="copyToClipboard()">Copy</button>
+  <button onclick="clearFields()">Clear</button>
+
+  <script>
+    function copyToClipboard() {
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const steps = document.getElementById("steps").value.trim();
+      const actual = document.getElementById("actual").value.trim();
+      const expected = document.getElementById("expected").value.trim();
+
+      const severityGuide = `
+Severity Guide:
+
+Severity
+
+Definition
+
+Examples
+
+Blocker 🚫
+A bug that blocks a major part of the test suite or a few critical tests.
+Examples: Session duration for session verification.
+
+Critical 💣
+A significant disruption to the main purpose of the tested system.
+Examples:
+- A crash on the app (no matter how common).
+- A disruption to monetization.
+- A disruption to key reports.
+- A common unhealthy feature behavior.
+- A major difference between the specification and the actual development.
+- Any disruptive visible issue to the user.
+- Highlighting the wrong CTA button.
+- Missing reports.
+- Redundant server requests.
+
+Normal 🔥
+A disruption to the main purpose of the tested system that is not significant/common.
+Examples:
+- Minor mistakes to reports.
+- An uncommon unhealthy feature behavior.
+- A difference between the specification and the actual development - that is reasonable.
+- Missing fields on reports.
+- Kill process does not return to the last tab but to the main tab.
+
+Minor 🌵
+A non-UI issue that has minimal effect on the system.
+Examples:
+- Easy to prevent edge cases.
+- Insignificant UI issues.
+- Menu size is a little off.
+- Invalid values lack handling.
+`;
+
+      const instructions = `
+This is a Jira ticket, or Jira bug ticket.  
+You need to read it all, and fix and improve any grammar issues and readability issues.  
+DO NOT CHANGE ANY STRUCTURE, and DO NOT ADD ANY UNNECESSARY or UNMENTIONED INFO.  
+
+The fields here, one by one, each section in a new line.
+
+For each section:
+Provide the updated text with grammar and readability fixes applied.
+Double-check all corrections for grammatical accuracy and consistency before submitting the updated text.  
+Add a comment at the end of the section explaining what fixes were made (if any). Example:
+📝 Fix: spelling of “disaply” → “display” (write the content without the apostrophe!)
+If no changes are needed, include:
+✅ No changes needed.
+
+Additionally:
+- Based on the Severity Guide below and the data provided in the ticket, determine the appropriate severity level (Blocker, Critical, Normal, Minor).
+- Explain the reasoning behind the severity decision using examples from the guide.
+- Be critical and thorough in your assessment.
+
+${severityGuide}
+
+---
+
+Title:
+${title}
+
+Description:
+${description}
+
+Steps to Reproduce:
+${steps}
+
+Actual Result:
+${actual}
+
+Expected Result:
+${expected}
+
+Suggested Severity:
+Please determine the appropriate severity based on the given data and the Severity Guide.
+`;
+
+      navigator.clipboard.writeText(instructions)
+        .then(() => alert("Copied to clipboard!"))
+        .catch(err => alert("Copy failed: " + err));
+    }
+
+    function clearFields() {
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("steps").value = "";
+      document.getElementById("actual").value = "";
+      document.getElementById("expected").value = "";
+    }
+  </script>
+
+</body>
+</html>

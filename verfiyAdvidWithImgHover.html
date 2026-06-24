@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ad Quality Data Viewer Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        #controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #controls button,
+        #controls input[type="file"] {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #dataTable {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            table-layout: fixed;
+        }
+        #dataTable th, #dataTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+        #dataTable th {
+            background-color: #4CAF50;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            height: auto;
+        }
+        #dataTable th.row-number, #dataTable td.row-number {
+            width: 1%;
+            white-space: nowrap;
+        }
+        #dataTable tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .checkbox-container {
+            text-align: center;
+        }
+        #dataTable td {
+            overflow: hidden;
+        }
+        video, iframe {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
+        img {
+            width: 100%; /* Ensure images fill the table cell */
+            max-height: 200px;
+            height: auto;
+        }
+        .app-name {
+            font-weight: bold;
+        }
+        .app-developer {
+            color: #555;
+        }
+        .app-description {
+            margin-top: 5px;
+        }
+        .app-icon {
+            float: left;
+            margin-right: 10px;
+            max-width: 60px;
+            max-height: 60px;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+        }
+        .image-tooltip {
+            display: none;
+            position: fixed;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 10000; /* High z-index to be above everything else */
+            background-color: #fff;
+        }
+        .image-tooltip img {
+            max-width: 400px;
+            max-height: 400px;
+        }
+        .image-container:hover .image-tooltip {
+            display: block;
+        }
+        #pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #pagination button {
+            margin: 0 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #pageInfo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        .sortable:after {
+            content: " \25B2\25BC";
+            font-size: 12px;
+            color: white;
+            margin-left: 5px;
+        }
+        .multi-checkbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .multi-checkbox label {
+            margin-right: 10px;
+        }
+        #columnVisibilityControls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #columnVisibilityControls label {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        #columnVisibilityControls input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .advid-container {
+            margin-top: 5px;
+        }
+        .advid-container button {
+            margin-right: 5px;
+        }
+        .red-checkbox-container {
+            display: inline-flex;
+            align-items: center;
+            margin-top: 5px;
+        }
+        .red-checkbox {
+            margin-right: 5px;
+        }
+        .indicator {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ad Quality Data Viewer Tool</h1>
+    <div id="controls">
+        <button id="downloadTemplateButton">Download Template CSV</button>
+        <input type="file" id="csvFileInput" accept=".csv" />
+        <button id="loadCsvButton">Load CSV</button>
+        <button id="exportCsvButton">Export CSV</button>
+    </div>
+    <div id="columnVisibilityControls"></div>
+    <div style="overflow-x: auto;">
+        <table id="dataTable"></table>
+    </div>
+    <div id="pagination">
+        <button id="prevPageButton">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPageButton">Next</button>
+    </div>
+    <script>
+    let tableData = [];
+    let tableHeaders = [];
+    let inputFileName = 'export.csv';
+    let currentPage = 1;
+    const rowsPerPage = 50;
+    let totalPages = 1;
+    let sortColumn = null;
+    let sortOrder = 'asc';
+    const contentOptions = ['gambling', 'alcohol', 'violence', 'politics', 'drugs'];
+    let columnVisibility = {};
+
+    document.getElementById('loadCsvButton').addEventListener('click', function () {
+        const fileInput = document.getElementById('csvFileInput');
+        const file = fileInput.files[0];
+        if (file) {
+            inputFileName = file.name;
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const contents = e.target.result;
+                parseAndDisplayCSV(contents);
+            };
+            reader.readAsText(file);
+        } else {
+            alert('Please select a CSV file first.');
+        }
+    });
+
+    async function parseAndDisplayCSV(contents) {
+        const parsedData = parseCSV(contents);
+        const headers = parsedData.headers;
+        const data = parsedData.rows;
+        tableData = data;
+
+        const advidColumns = headers.filter(h => h === 'advid' || h.startsWith('advid_') || h.startsWith('orig_advid') || h.startsWith('advid_without_threshold') || h.startsWith('advid_threshold_') || h.startsWith('max_advid_with_generics') || h.startsWith('max_advid_with_generics_null') || h.startsWith('advid_min_threshold_100_with_generics_null') || h.startsWith('advid_threshold_100_generic_fallback_to_max') || h.startsWith('advid_with_max_imps_count'));
+
+        tableHeaders = headers.filter(h => !h.startsWith('manual_check_') && !contentOptions.includes(h) && !advidColumns.includes(h));
+        tableHeaders.push(...advidColumns);
+
+        let scidIndex = tableHeaders.indexOf('scid');
+        if (scidIndex > -1) {
+            tableHeaders.splice(scidIndex, 1);
+            let vidurlsIndex = tableHeaders.indexOf('vidurls');
+            tableHeaders.splice(vidurlsIndex, 0, 'scid');
+        }
+
+        let icourlsIndex = tableHeaders.indexOf('icourls');
+        if (icourlsIndex > -1) {
+            tableHeaders.splice(icourlsIndex, 1);
+            let imgurlsIndex = tableHeaders.indexOf('imgurls');
+            tableHeaders.splice(imgurlsIndex + 1, 0, 'icourls');
+        }
+
+        let contentFlagsIndex = tableHeaders.indexOf('icourls');
+        if (contentFlagsIndex > -1) {
+            tableHeaders.splice(contentFlagsIndex + 1, 0, 'content_flags');
+        } else {
+            tableHeaders.push('content_flags');
+        }
+
+        tableHeaders.forEach(header => {
+            if (columnVisibility[header] === undefined) {
+                columnVisibility[header] = true;
+            }
+        });
+
+        columnVisibility['#'] = true;
+        generateColumnVisibilityControls();
+        totalPages = Math.ceil(tableData.length / rowsPerPage);
+        currentPage = 1;
+        await generateTable();
+    }
+
+    function generateColumnVisibilityControls() {
+        const container = document.getElementById('columnVisibilityControls');
+        container.innerHTML = '';
+
+        const rowNumLabel = document.createElement('label');
+        rowNumLabel.style.marginRight = '10px';
+
+        const rowNumCheckbox = document.createElement('input');
+        rowNumCheckbox.type = 'checkbox';
+        rowNumCheckbox.checked = columnVisibility['#'];
+
+        rowNumCheckbox.addEventListener('change', function () {
+            columnVisibility['#'] = this.checked;
+            generateTable();
+        });
+
+        rowNumLabel.appendChild(rowNumCheckbox);
+        rowNumLabel.appendChild(document.createTextNode('#'));
+        container.appendChild(rowNumLabel);
+
+        tableHeaders.forEach(header => {
+            const label = document.createElement('label');
+            label.style.marginRight = '10px';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = columnVisibility[header] !== false;
+
+            checkbox.addEventListener('change', function () {
+                columnVisibility[header] = this.checked;
+                generateTable();
+            });
+
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(header));
+            container.appendChild(label);
+        });
+    }
+
+    async function generateTable() {
+        const table = document.getElementById('dataTable');
+        table.innerHTML = '';
+
+        const visibleHeaders = ['#', ...tableHeaders.filter(header => columnVisibility[header] !== false)].filter(header => columnVisibility[header] !== false);
+
+        const thead = table.createTHead();
+        const headerRow = thead.insertRow(0);
+        visibleHeaders.forEach(header => {
+            const cell = document.createElement('th');
+            cell.textContent = header;
+            cell.className = 'sortable';
+            cell.dataset.column = header;
+            if (header === '#') {
+                cell.classList.add('row-number');
+            } else if (header !== 'content_flags') {
+                cell.draggable = true;
+                cell.addEventListener('dragstart', handleDragStart);
+                cell.addEventListener('dragover', handleDragOver);
+                cell.addEventListener('drop', handleDrop);
+                cell.addEventListener('click', function () {
+                    const column = this.dataset.column;
+                    if (column !== 'content_flags') {
+                        sortTableByColumn(column);
+                    }
+                });
+            }
+            headerRow.appendChild(cell);
+        });
+
+        const tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = Math.min(startIndex + rowsPerPage, tableData.length);
+        const pageData = tableData.slice(startIndex, endIndex);
+
+        for (let i = 0; i < pageData.length; i++) {
+            const rowIndex = startIndex + i + 1;
+            const row = tbody.insertRow();
+
+            visibleHeaders.forEach(header => {
+                const cell = row.insertCell();
+                if (header === '#') {
+                    cell.textContent = rowIndex;
+                    cell.classList.add('row-number');
+                } else {
+                    const value = pageData[i][header];
+                    if (header === 'vidurls' && value && value.trim() !== '') {
+                        if (value.includes('youtube.com') || value.includes('youtu.be')) {
+                            let videoId = value.split('v=')[1] || value.split('/')[1];
+                            let ampersandPosition = videoId.indexOf('&');
+                            if (ampersandPosition !== -1) {
+                                videoId = videoId.substring(0, ampersandPosition);
+                            }
+                            const iframe = document.createElement('iframe');
+                            iframe.src = `https://www.youtube.com/embed/${videoId}`;
+                            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                            iframe.allowFullscreen = true;
+                            cell.appendChild(iframe);
+                        } else {
+                            const video = document.createElement('video');
+                            video.controls = true;
+                            const source = document.createElement('source');
+                            source.src = value;
+                            source.type = 'video/mp4';
+                            video.appendChild(source);
+                            cell.appendChild(video);
+                        }
+                    } else if (['ecurls', 'imgurls', 'icourls'].includes(header) && value && value.trim() !== '') {
+                        const imgContainer = document.createElement('div');
+                        imgContainer.className = 'image-container';
+                        
+                        const img = document.createElement('img');
+                        img.src = value;
+                        img.alt = 'Image';
+
+                        const tooltipContainer = document.createElement('div');
+                        tooltipContainer.className = 'image-tooltip';
+
+                        const tooltipImg = document.createElement('img');
+                        tooltipImg.src = value;
+
+                        tooltipContainer.appendChild(tooltipImg);
+                        imgContainer.appendChild(img);
+                        imgContainer.appendChild(tooltipContainer);
+                        cell.appendChild(imgContainer);
+
+                        imgContainer.addEventListener('mouseover', function(event) {
+                            tooltipContainer.style.left = `${event.clientX + 20}px`;
+                            tooltipContainer.style.top = `${event.clientY + 20}px`;
+                        });
+                    } else if (isAdvidColumn(header)) {
+                        const container = document.createElement('div');
+                        let advidValue = document.createTextNode(value + ' ');
+
+                        if (pageData[i]['platform'] === 'ios') {
+                            if (value && value.trim() !== '') {
+                                const link = document.createElement('a');
+                                link.href = `https://apps.apple.com/us/app/id/${value}`;
+                                link.target = '_blank';
+                                link.textContent = value;
+                                link.style.color = '#007AFF';
+                                link.style.textDecoration = 'none';
+                                advidValue = link;
+                            }
+                        } else if (pageData[i]['platform'] === 'android') {
+                            if (value && value.trim() !== '') {
+                                const link = document.createElement('a');
+                                link.href = `https://play.google.com/store/apps/details?id=${value}`;
+                                link.target = '_blank';
+                                link.textContent = value;
+                                link.style.color = '#3ddc84';
+                                link.style.textDecoration = 'none';
+                                advidValue = link;
+                            }
+                        }
+
+                        container.appendChild(advidValue);
+                        container.appendChild(document.createElement('br'));
+
+                        const actionContainer = document.createElement('div');
+                        actionContainer.className = 'advid-container';
+
+                        const visitButton = document.createElement('button');
+                        visitButton.textContent = '🌐';
+                        visitButton.style.cursor = 'pointer';
+
+                        visitButton.addEventListener('click', function () {
+                            if (value && value.trim() !== '') {
+                                let url = value.trim();
+                                if (!/^https?:\/\//i.test(url)) {
+                                    url = 'http://' + url;
+                                }
+                                window.open(url, '_blank');
+                            } else {
+                                alert('Invalid URL');
+                            }
+                        });
+
+                        actionContainer.appendChild(visitButton);
+
+                        const searchButton = document.createElement('button');
+                        searchButton.textContent = '🔍';
+                        searchButton.style.cursor = 'pointer';
+
+                        searchButton.addEventListener('click', function () {
+                            const query = encodeURIComponent(value);
+                            window.open(`https://www.google.com/search?q=${query}`, '_blank');
+                        });
+
+                        actionContainer.appendChild(searchButton);
+
+                        if (pageData[i]['platform'] === 'ios' && value && value.trim() !== '') {
+                            const appleSearchButton = document.createElement('button');
+                            appleSearchButton.textContent = '';
+                            appleSearchButton.style.cursor = 'pointer';
+
+                            appleSearchButton.addEventListener('click', function () {
+                                const appId = value;
+                                if (appId) {
+                                    const searchTerm = `id${appId}`;
+                                    window.open(`https://www.google.com/search?q=${encodeURIComponent(searchTerm)}`, '_blank');
+                                }
+                            });
+
+                            actionContainer.appendChild(appleSearchButton);
+                        }
+
+                        const checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        let manualCheckField = `manual_check_${header}`;
+                        checkbox.checked = pageData[i][manualCheckField];
+                        checkbox.dataset.globalIndex = startIndex + i;
+                        checkbox.dataset.manualCheckField = manualCheckField;
+                        checkbox.addEventListener('change', function () {
+                            const index = this.dataset.globalIndex;
+                            const field = this.dataset.manualCheckField;
+                            tableData[index][field] = this.checked;
+                        });
+
+                        actionContainer.appendChild(checkbox);
+                        container.appendChild(actionContainer);
+
+                        const redCheckboxContainer = document.createElement('div');
+                        redCheckboxContainer.className = 'red-checkbox-container';
+
+                        const redCheckbox = document.createElement('input');
+                        redCheckbox.type = 'checkbox';
+                        redCheckbox.className = 'red-checkbox';
+                        redCheckbox.checked = pageData[i]['none_of_the_above'] || false;
+                        redCheckbox.dataset.globalIndex = startIndex + i;
+                        redCheckbox.dataset.option = 'none_of_the_above';
+                        redCheckbox.addEventListener('change', function () {
+                            const siblingCheckboxes = cell.querySelectorAll('input[type=checkbox]:not(.red-checkbox)');
+                            siblingCheckboxes.forEach(checkbox => {
+                                checkbox.disabled = this.checked;
+                            });
+                            const index = this.dataset.globalIndex;
+                            tableData[index]['none_of_the_above'] = this.checked;
+                        });
+
+                        redCheckboxContainer.appendChild(redCheckbox);
+
+                        const indicator = document.createElement('span');
+                        indicator.textContent = 'X';
+                        indicator.className = 'indicator';
+                        redCheckboxContainer.appendChild(indicator);
+
+                        container.appendChild(redCheckboxContainer);
+
+                        cell.appendChild(container);
+                    } else if (header === 'content_flags') {
+                        const container = document.createElement('div');
+                        container.className = 'multi-checkbox';
+                        contentOptions.forEach(option => {
+                            const label = document.createElement('label');
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+
+                            if (typeof pageData[i][option] === 'undefined') {
+                                pageData[i][option] = false;
+                            }
+
+                            checkbox.checked = pageData[i][option];
+                            checkbox.dataset.globalIndex = startIndex + i;
+                            checkbox.dataset.option = option;
+
+                            checkbox.addEventListener('change', function () {
+                                const index = this.dataset.globalIndex;
+                                const opt = this.dataset.option;
+                                tableData[index][opt] = this.checked;
+                            });
+
+                            label.appendChild(checkbox);
+                            label.appendChild(document.createTextNode(option));
+                            container.appendChild(label);
+                        });
+                        cell.appendChild(container);
+                    } else if (header === 'app_details_advid_test' && pageData[i]['platform'] === 'ios') {
+                        if (pageData[i]['advid_test'] && pageData[i]['advid_test'].trim() !== '') {
+                            const appId = pageData[i]['advid_test'];
+                            cell.textContent = 'Loading...';
+                            fetchAppDetails(appId, cell);
+                        } else {
+                            cell.textContent = 'No App ID';
+                        }
+                    } else {
+                        cell.textContent = value;
+                    }
+                }
+            });
+        }
+
+        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+    }
+
+    document.getElementById('prevPageButton').addEventListener('click', function () {
+        if (currentPage > 1) {
+            currentPage--;
+            generateTable();
+        }
+    });
+
+    document.getElementById('nextPageButton').addEventListener('click', function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            generateTable();
+        }
+    });
+
+    function sortTableByColumn(column) {
+        if (sortColumn === column) {
+            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+            sortColumn = column;
+            sortOrder = 'asc';
+        }
+
+        tableData.sort(function (a, b) {
+            let valA = a[column];
+            let valB = b[column];
+
+            const numA = parseFloat(valA);
+            const numB = parseFloat(valB);
+            if (!isNaN(numA) && !isNaN(numB)) {
+                valA = numA;
+                valB = numB;
+            }
+
+            if (typeof valA === 'boolean' && typeof valB === 'boolean') {
+                valA = valA ? 1 : 0;
+                valB = valB ? 1 : 0;
+            }
+
+            if (valA < valB) {
+                return sortOrder === 'asc' ? -1 : 1;
+            } else if (valA > valB) {
+                return sortOrder === 'asc' ? 1 : -1;
+            } else {
+                return 0;
+            }
+        });
+
+        currentPage = 1;
+        generateTable();
+    }
+
+    function fetchAppDetails(appId, cell) {
+        fetch(`https://itunes.apple.com/lookup?id=${appId}&country=us`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.resultCount > 0) {
+                    const appInfo = data.results[0];
+
+                    const container = document.createElement('div');
+
+                    const icon = document.createElement('img');
+                    icon.src = appInfo.artworkUrl100;
+                    icon.className = 'app-icon';
+
+                    const name = document.createElement('div');
+                    name.className = 'app-name';
+                    name.textContent = appInfo.trackName;
+
+                    const developer = document.createElement('div');
+                    developer.className = 'app-developer';
+                    developer.textContent = `by ${appInfo.artistName}`;
+
+                    const description = document.createElement('div');
+                    description.className = 'app-description';
+                    description.textContent = appInfo.description.substring(0, 100) + '...';
+
+                    container.appendChild(icon);
+                    container.appendChild(name);
+                    container.appendChild(developer);
+                    container.appendChild(description);
+
+                    cell.textContent = '';
+                    cell.appendChild(container);
+                } else {
+                    cell.textContent = 'App not found';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching app details:', error);
+                cell.textContent = 'Error loading app details';
+            });
+    }
+
+    document.getElementById('exportCsvButton').addEventListener('click', function () {
+        if (!tableData || !tableHeaders || tableData.length === 0) {
+            alert('No data to export.');
+            return;
+        }
+
+        const exportHeaders = new Set();
+        tableData.forEach(row => {
+            Object.keys(row).forEach(key => exportHeaders.add(key));
+        });
+
+        const allHeaders = Array.from(exportHeaders);
+
+        let csvContent = '';
+        csvContent += allHeaders.join(',') + '\n';
+
+        tableData.forEach(function (row) {
+            const rowData = [];
+            allHeaders.forEach(function (header) {
+                let value = row[header] === undefined ? '' : row[header];
+
+                if (typeof value === 'boolean') {
+                    value = value.toString().toLowerCase();
+                }
+                if (typeof value === 'string' && value.includes('"')) {
+                    value = value.replace(/"/g, '""');
+                }
+                if (value && (value.toString().includes(',') || value.toString().includes('\n') || value.toString().includes('"'))) {
+                    value = '"' + value + '"';
+                }
+                rowData.push(value);
+            });
+            csvContent += rowData.join(',') + '\n';
+        });
+
+        const exportFileName = 'export_' + inputFileName;
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        if (navigator.msSaveBlob) {
+            navigator.msSaveBlob(blob, exportFileName);
+        } else {
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = exportFileName;
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    });
+
+    document.getElementById('downloadTemplateButton').addEventListener('click', function () {
+        const templateCsvContent = [
+            ['#', 'scid', 'vidurls', 'ecurls', 'imgurls', 'icourls', 'platform', 'advid', 'advid_production', 'advid_control', 'advid_test', 'orig_advid', 'advid_without_threshold', 'advid_threshold_1', 'advid_threshold_10', 'advid_threshold_100', 'max_advid_with_generics', 'max_advid_with_generics_null', 'advid_min_threshold_100_with_generics_null', 'advid_threshold_100_generic_fallback_to_max', 'advid_with_max_imps_count'],
+            ['1', 'scid1', 'https://www.example.com/video1.mp4', 'https://www.example.com/image1.jpg', 'https://www.example.com/img1.jpg', 'https://www.example.com/icon1.jpg', 'android', 'advid_001', 'adv001', 'orig123', 'com.example.android.app', 'adv_orig1', 'adv_without_001', 'adv_threshold_1_001', 'adv_threshold_10_001', 'adv_threshold_100_001', 'max_advid_with_generics_001', 'max_advid_with_generics_null_001', 'advid_min_threshold_100_with_generics_null_001', 'advid_threshold_100_generic_fallback_to_max_001', 'advid_with_max_imps_count_001'],
+            ['2', 'scid2', 'https://www.example.com/video2.mp4', 'https://www.example.com/image2.jpg', 'https://www.example.com/img2.jpg', 'https://www.example.com/icon2.jpg', 'ios', 'advid_002', 'adv002', 'orig456', '1491074310', 'adv_orig2', 'adv_without_002', 'adv_threshold_1_002', 'adv_threshold_10_002', 'adv_threshold_100_002', 'max_advid_with_generics_002', 'max_advid_with_generics_null_002', 'advid_min_threshold_100_with_generics_null_002', 'advid_threshold_100_generic_fallback_to_max_002', 'advid_with_max_imps_count_002']
+        ];
+
+        let csvContent = '';
+        templateCsvContent.forEach(function (rowArray) {
+            const row = rowArray.join(',');
+            csvContent += row + '\n';
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        if (navigator.msSaveBlob) {
+            navigator.msSaveBlob(blob, 'template.csv');
+        } else {
+            const url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = 'template.csv';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    });
+
+    function parseCSV(text) {
+        const lines = text.split('\n').filter(line => line.trim() !== '');
+        const headers = lines[0].split(',');
+        const rows = lines.slice(1).map(line => {
+            const values = line.split(',');
+            return headers.reduce((obj, header, index) => {
+                obj[header] = values[index]?.trim() || '';
+                return obj;
+            }, {});
+        });
+        return { headers, rows };
+    }
+
+    function isAdvidColumn(header) {
+        return header === 'advid' || header.startsWith('advid_') || header.startsWith('orig_advid') || header.startsWith('advid_without_threshold') || header.startsWith('advid_threshold_') || header.startsWith('max_advid_with_generics') || header.startsWith('max_advid_with_generics_null') || header.startsWith('advid_min_threshold_100_with_generics_null') || header.startsWith('advid_threshold_100_generic_fallback_to_max') || header.startsWith('advid_with_max_imps_count');
+    }
+
+    let draggedHeader = null;
+
+    function handleDragStart(event) {
+        draggedHeader = event.target;
+        event.dataTransfer.effectAllowed = 'move';
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = 'move';
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        if (draggedHeader && draggedHeader !== event.target) {
+            const from = tableHeaders.indexOf(draggedHeader.dataset.column);
+            const to = tableHeaders.indexOf(event.target.dataset.column);
+            tableHeaders.splice(to, 0, tableHeaders.splice(from, 1)[0]);
+            generateTable();
+        }
+    }
+
+    // Add the beforeunload event to prevent accidental tab closing
+    window.addEventListener('beforeunload', function (event) {
+        event.preventDefault();
+        event.returnValue = '';
+    });
+    </script>
+</body>
+</html>

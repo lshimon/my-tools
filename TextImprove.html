@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Text Improvement Tool</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      background-color: #f4f5f7;
+    }
+    .container {
+      background-color: #ffffff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      border-bottom: 2px solid #eaeaea;
+      padding-bottom: 10px;
+      margin-top: 0;
+    }
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 20px;
+      margin-bottom: 5px;
+    }
+    select, input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      resize: vertical;
+      font-size: 14px;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    .jira-textarea { height: 80px; }
+    .controls { margin-top: 20px; }
+    button {
+      margin-right: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      color: white;
+    }
+    #copyButton { background-color: #007BFF; }
+    #copyButton:hover { background-color: #0056b3; }
+    #clearButton { background-color: #6c757d; }
+    #clearButton:hover { background-color: #5a6268; }
+    .hidden { display: none; }
+    
+    /* UPDATED: Flexbox alignment fix */
+    .mode-selector-wrapper {
+        display: flex;
+        align-items: center; /* This is the key property for vertical alignment */
+        gap: 20px;
+    }
+    #textContext {
+        width: 300px;
+        flex-shrink: 0;
+    }
+    /* Ensure the radio button group has no extra margin causing issues */
+    #new-reply-section {
+        margin: 0; 
+    }
+
+    .formatting-options {
+        border-top: 1px solid #eaeaea;
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+    .formatting-options h3 {
+        margin-top: 0;
+        font-size: 14px;
+        color: #555;
+        font-weight: 600;
+    }
+    .inline-label {
+        display: inline-flex;
+        align-items: center;
+        font-weight: normal;
+        cursor: pointer;
+        margin-right: 15px;
+    }
+    input[type="checkbox"], input[type="radio"] {
+        margin-right: 8px;
+    }
+    .option-group { margin-top: 10px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Text Improvement Tool</h2>
+
+  <label for="textContext">Select Tool Mode:</label>
+  <div class="mode-selector-wrapper">
+    <select id="textContext">
+      <option value="anything" selected>Anything (General Purpose)</option>
+      <option value="slack">Slack Message</option>
+      <option value="email">Email</option>
+      <option value="jira_reply">Jira Comment / Reply</option>
+      <option value="jira_ticket">Jira Bug Ticket</option>
+      <option value="other">Other...</option>
+    </select>
+    <div id="new-reply-section" class="option-group hidden">
+        <label class="inline-label"><input type="radio" name="messageType" value="new" checked> New Message</label>
+        <label class="inline-label"><input type="radio" name="messageType" value="reply"> Reply</label>
+    </div>
+  </div>
+
+
+  <div id="general-section">
+    <div id="other-context-section" class="hidden">
+      <label for="otherContext">Please specify the context:</label>
+      <input type="text" id="otherContext" placeholder="e.g., Technical documentation, Marketing copy">
+    </div>
+    <label for="mainText">Your Text:</label>
+    <textarea id="mainText" placeholder="Paste your text here..."></textarea>
+  </div>
+  
+  <div id="jira-ticket-section" class="hidden">
+    <label for="jiraTitle">Title</label>
+    <textarea id="jiraTitle" class="jira-textarea" style="height: 40px;"></textarea>
+    <label for="jiraDescription">Description</label>
+    <textarea id="jiraDescription" class="jira-textarea"></textarea>
+    <label for="jiraSteps">Steps to Reproduce</label>
+    <textarea id="jiraSteps" class="jira-textarea"></textarea>
+    <label for="jiraActual">Actual Result</label>
+    <textarea id="jiraActual" class="jira-textarea"></textarea>
+    <label for="jiraExpected">Expected Result</label>
+    <textarea id="jiraExpected" class="jira-textarea"></textarea>
+  </div>
+
+  <div class="controls">
+    <button id="copyButton" onclick="copyToClipboard()">Copy Prompt</button>
+    <button id="clearButton" onclick="clearFields()">Clear</button>
+  </div>
+  
+  <div id="formatting-section">
+    <div class="formatting-options">
+        <h3>Formatting Options</h3>
+        <div class="option-group">
+            <label for="toneSelector" style="display:inline-block; margin-right: 10px;">Tone:</label>
+            <select id="toneSelector" style="width: auto; display: inline-block;">
+                <option value="neutral">Neutral</option>
+                <option value="formal">Formal</option>
+                <option value="friendly">Friendly</option>
+                <option value="urgent">Urgent</option>
+            </select>
+        </div>
+        <div class="option-group">
+             <label class="inline-label"><input type="checkbox" id="preserveStructure" checked> Preserve original structure</label>
+             <label class="inline-label"><input type="checkbox" id="suggestEmojis"> Suggest Emojis</label>
+        </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // All JavaScript remains the same as the previous version
+  document.addEventListener('DOMContentLoaded', function() {
+    const contextDropdown = document.getElementById('textContext');
+    contextDropdown.addEventListener('change', updateToolUI);
+    updateToolUI();
+  });
+
+  function updateToolUI() {
+    const context = document.getElementById('textContext').value;
+    const sections = {
+        general: document.getElementById('general-section'),
+        jiraTicket: document.getElementById('jira-ticket-section'),
+        formatting: document.getElementById('formatting-section'),
+        newReply: document.getElementById('new-reply-section'),
+        otherContext: document.getElementById('other-context-section')
+    };
+    Object.values(sections).forEach(s => s.classList.add('hidden'));
+    if (context === 'jira_ticket') {
+        sections.jiraTicket.classList.remove('hidden');
+    } else {
+        sections.general.classList.remove('hidden');
+        sections.formatting.classList.remove('hidden');
+        if (context === 'slack' || context === 'email') {
+            sections.newReply.classList.remove('hidden');
+        } else if (context === 'other') {
+            sections.otherContext.classList.remove('hidden');
+        }
+    }
+  }
+
+  function getGeneralPrompt() {
+      const mainText = document.getElementById("mainText").value.trim();
+      if (!mainText) { alert("Please enter some text to improve."); return null; }
+      const context = document.getElementById("textContext").value;
+      const messageType = document.querySelector('input[name="messageType"]:checked')?.value;
+      let contextInstructions = "";
+      switch (context) {
+          case 'slack': case 'email':
+              const typeText = messageType === 'reply' ? 'Reply' : 'New';
+              const platformText = context === 'slack' ? 'Slack Message' : 'Email';
+              contextInstructions = `The following is a ${typeText} ${platformText}. Please improve it for clarity and conciseness.`;
+              break;
+          case 'jira_reply':
+              contextInstructions = "The following is a Jira comment or reply. Please improve it to be clear, professional, and technically precise. Focus on actionable language.";
+              break;
+          case 'other':
+              const otherContext = document.getElementById("otherContext").value.trim();
+              if (!otherContext) { alert("Please specify the context for the 'Other' option."); return null; }
+              contextInstructions = `The following text is for: '${otherContext}'. Please improve it for clarity, grammar, and conciseness, adapting the tone and structure for this context.`;
+              break;
+          default:
+              contextInstructions = "Please improve the following text for clarity, grammar, readability, and conciseness.";
+              break;
+      }
+      const tone = document.getElementById("toneSelector").value;
+      const preserveStructure = document.getElementById("preserveStructure").checked;
+      const suggestEmojis = document.getElementById("suggestEmojis").checked;
+      let formattingInstructions = [];
+      if (tone !== 'neutral') { formattingInstructions.push(`The tone should be ${tone}.`); }
+      if (preserveStructure) { formattingInstructions.push("IMPORTANT: Do not change the original structure (e.g., line breaks, paragraphs)."); } 
+      else { formattingInstructions.push("Feel free to change the structure (e.g., add paragraphs or bullet points) to improve clarity.");}
+      if (suggestEmojis) { formattingInstructions.push("You can suggest relevant emojis to enhance the message.");}
+      return `${contextInstructions}\n\n${formattingInstructions.join(' ')}\n\n---\n\nOriginal Text:\n${mainText}`;
+  }
+
+  function getJiraTicketPrompt() {
+      const fields = { title: document.getElementById("jiraTitle").value.trim(), description: document.getElementById("jiraDescription").value.trim(), steps: document.getElementById("jiraSteps").value.trim(), actual: document.getElementById("jiraActual").value.trim(), expected: document.getElementById("jiraExpected").value.trim() };
+      if (!fields.title || !fields.description) { alert("Please fill in at least the Title and Description for the Jira ticket."); return null; }
+      const severityGuide = `Severity Guide:\n\nSeverity | Definition | Examples\n--- | --- | ---\nBlocker 🚫 | Blocks a major part of the test suite or critical tests. | Session duration for session verification.\nCritical 💣 | Significant disruption to the main purpose of the system. | App crash, monetization disruption, major report errors.\nNormal 🔥 | A non-significant disruption. | Minor report mistakes, uncommon unhealthy behavior.\nMinor 🌵 | Minimal effect on the system. | Minor UI issues, easy-to-prevent edge cases.`;
+      return `This is a Jira bug ticket. Please review and fix grammar and readability for each section. For each section, provide the updated text and a comment explaining the fix (e.g., 📝 Fix: spelling). If no changes are needed, write ✅ No changes needed.\n\nAdditionally, based on the Severity Guide below and the ticket data, determine and suggest the appropriate severity level (Blocker, Critical, Normal, Minor) with a brief explanation.\n\n${severityGuide}\n\n---\n\nTitle:\n${fields.title}\n\nDescription:\n${fields.description}\n\nSteps to Reproduce:\n${fields.steps}\n\nActual Result:\n${fields.actual}\n\nExpected Result:\n${fields.expected}\n\nSuggested Severity:\nPlease determine and explain.`;
+  }
+
+  function copyToClipboard() {
+    const context = document.getElementById("textContext").value;
+    let finalPrompt = (context === 'jira_ticket') ? getJiraTicketPrompt() : getGeneralPrompt();
+    if (finalPrompt) {
+        navigator.clipboard.writeText(finalPrompt.trim())
+          .then(() => alert("Prompt copied to clipboard!"))
+          .catch(err => alert("Copy failed: " + err));
+    }
+  }
+
+  function clearFields() {
+    const idsToClear = ["mainText", "otherContext", "jiraTitle", "jiraDescription", "jiraSteps", "jiraActual", "jiraExpected"];
+    idsToClear.forEach(id => { const el = document.getElementById(id); if (el) el.value = ""; });
+    document.getElementById("textContext").value = "anything";
+    document.getElementById("toneSelector").value = "neutral";
+    document.getElementById("preserveStructure").checked = true;
+    document.getElementById("suggestEmojis").checked = false;
+    updateToolUI();
+  }
+</script>
+
+</body>
+</html>

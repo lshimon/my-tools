@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jira Bug Ticket Formatter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 20px;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+    }
+    textarea {
+      width: 100%;
+      height: 80px;
+      resize: vertical;
+      font-size: 14px;
+    }
+    button {
+      margin-top: 20px;
+      margin-right: 10px;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Jira Ticket Formatter</h2>
+
+  <label for="title">Title</label>
+  <textarea id="title" style="height: 40px; resize: both;"></textarea>
+
+  <label for="description">Description</label>
+  <textarea id="description"></textarea>
+
+  <label for="steps">Steps to Reproduce</label>
+  <textarea id="steps"></textarea>
+
+  <label for="actual">Actual Result</label>
+  <textarea id="actual"></textarea>
+
+  <label for="expected">Expected Result</label>
+  <textarea id="expected"></textarea>
+
+  <button onclick="copyToClipboard()">Copy</button>
+  <button onclick="clearFields()">Clear</button>
+
+  <script>
+    function copyToClipboard() {
+      const title = document.getElementById("title").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const steps = document.getElementById("steps").value.trim();
+      const actual = document.getElementById("actual").value.trim();
+      const expected = document.getElementById("expected").value.trim();
+
+      const instructions = `
+This is a Jira ticket, or Jira bug ticket.  
+You need to read it all, and fix and improve any grammar issues and readability issues.  
+DO NOT CHANGE ANY STRUCTURE, and DO NOT ADD ANY UNNECESSARY or UNMENTIONED INFO.  
+The fields here, one by one, each section in a new line.
+
+For each section, if there's a grammar or clarity fix, add a comment like in the end of each section 
+📝 Fix: spelling of “disaply” → “display”  (write the content without the apostrophe!)
+Otherwise, just add:  
+✅ No changes needed. - again in the end of the section
+
+
+---`;
+
+      const output = `${instructions}
+
+Title:
+${title}
+
+Description:
+${description}
+
+Steps to Reproduce:
+${steps}
+
+Actual Result:
+${actual}
+
+Expected Result:
+${expected}`;
+
+      navigator.clipboard.writeText(output)
+        .then(() => alert("Copied to clipboard!"))
+        .catch(err => alert("Copy failed: " + err));
+    }
+
+    function clearFields() {
+      document.getElementById("title").value = "";
+      document.getElementById("description").value = "";
+      document.getElementById("steps").value = "";
+      document.getElementById("actual").value = "";
+      document.getElementById("expected").value = "";
+    }
+  </script>
+
+</body>
+</html>

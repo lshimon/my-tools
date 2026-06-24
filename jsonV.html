@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Viewer & Beautifier</title>
+  <style>
+    /* Base Styles */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin: 20px;
+      font-size: 24px;
+    }
+
+    /* Main Container */
+    .container {
+      display: flex;
+      flex: 1;
+      width: 100%;
+      height: calc(100% - 80px); /* Deduct the header height */
+      gap: 20px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      font-size: 14px;
+    }
+
+    button:active {
+      background-color: #0056b3;
+    }
+
+    /* Full Height Textarea */
+    textarea {
+      width: 100%;
+      flex: 1;
+      font-size: 16px;
+      line-height: 1.5;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      resize: none;
+      overflow: auto;
+    }
+
+    textarea:focus {
+      outline: none;
+      border-color: #007BFF;
+    }
+
+    /* JSON Viewer Output */
+    .json-output {
+      width: 100%;
+      flex: 1;
+      font-size: 14px;
+      line-height: 1.5;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 10px;
+      overflow: auto;
+      box-sizing: border-box;
+      font-family: monospace;
+      background-color: #f9f9f9;
+    }
+
+    .json-node {
+      position: relative;
+      margin-left: 20px;
+    }
+
+    .json-key {
+      color: #0056b3;
+      font-weight: bold;
+    }
+
+    .json-value {
+      color: #28a745;
+    }
+
+    .json-toggle {
+      cursor: pointer;
+      margin-right: 5px;
+      font-size: 20px; /* Larger toggler size */
+      user-select: none;
+    }
+
+    .json-toggle:hover {
+      color: #007BFF;
+    }
+
+    /* Hover Effect for Collapsible Nodes */
+    .json-node:hover {
+      background-color: #f0f0f0; /* Light grey hover effect */
+    }
+
+    .collapsible-content {
+      display: none;
+      margin-left: 20px;
+    }
+
+    .expanded > .collapsible-content {
+      display: block;
+    }
+
+    .collapsed > .collapsible-content {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>JSON Viewer & Beautifier</h1>
+  <div class="container">
+    <!-- Left Column (JSON Input) -->
+    <div class="column">
+      <div class="buttons">
+        <button id="copyLeftBtn">Copy</button>
+        <button id="clearLeftBtn">Clear</button>
+      </div>
+      <textarea id="jsonInput" placeholder="Enter or paste your JSON here..."></textarea>
+    </div>
+    
+    <!-- Right Column (JSON Tree Viewer) -->
+    <div class="column">
+      <div class="buttons">
+        <button id="clearTree">Clear Viewer</button>
+      </div>
+      <div id="jsonViewer" class="json-output"></div>
+    </div>
+  </div>
+
+  <script>
+    const jsonInput = document.getElementById('jsonInput');
+    const jsonViewer = document.getElementById('jsonViewer');
+    const clearTree = document.getElementById('clearTree');
+
+    // Render Collapsible JSON Tree
+    function renderJsonTree(parent, json) {
+      if (typeof json !== 'object' || json === null) {
+        const valueNode = document.createElement('span');
+        valueNode.className = 'json-value';
+        valueNode.textContent = JSON.stringify(json);
+        parent.appendChild(valueNode);
+        return;
+      }
+
+      const isArray = Array.isArray(json);
+
+      for (const key in json) {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'json-node collapsed';
+        
+        // Toggle Node
+        const toggle = document.createElement('span');
+        toggle.className = 'json-toggle';
+        toggle.textContent = '+';
+        toggle.addEventListener('click', () => {
+          const isCollapsed = wrapper.classList.contains('collapsed');
+          wrapper.classList.toggle('collapsed', !isCollapsed);
+          wrapper.classList.toggle('expanded', isCollapsed);
+          toggle.textContent = isCollapsed ? '-' : '+';
+        });
+
+        // Key Name
+        const keyName = document.createElement('span');
+        keyName.className = 'json-key';
+        keyName.textContent = isArray ? `${key}` : `${key}:`;
+        
+        // Collapsible Content
+        const collapsibleContent = document.createElement('div');
+        collapsibleContent.className = 'collapsible-content';
+
+        renderJsonTree(collapsibleContent, json[key]);
+        
+        // Append Elements
+        wrapper.appendChild(toggle);
+        wrapper.appendChild(keyName);
+        wrapper.appendChild(collapsibleContent);
+        parent.appendChild(wrapper);
+      }
+    }
+
+    // Parse and Render JSON Tree
+    function renderViewer() {
+      try {
+        const json = JSON.parse(jsonInput.value);
+        jsonViewer.innerHTML = ''; // Clear previous content
+        renderJsonTree(jsonViewer, json);
+      } catch (error) {
+        jsonViewer.innerHTML = '<span style="color: red;">Invalid JSON!</span>';
+      }
+    }
+
+    // Live Sync Input -> Viewer
+    jsonInput.addEventListener('input', renderViewer);
+
+    // Clear Viewer
+    clearTree.addEventListener('click', () => {
+      jsonViewer.innerHTML = '';
+    });
+  </script>
+</body>
+</html>

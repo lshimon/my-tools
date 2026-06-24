@@ -1,0 +1,1833 @@
+{
+  "metadata": {
+    "device": {
+      "deviceId": "R3CX80Q3BFV",
+      "name": "samsung SM-A166U",
+      "serialNumber": "R3CX80Q3BFV",
+      "isOnline": true,
+      "release": "14",
+      "sdk": 34,
+      "featureLevel": 34,
+      "model": "SM-A166U",
+      "type": "HANDHELD",
+      "isEmulator": false
+    },
+    "filter": "package:mine sending to atom stream (aura_news_lock_screen):",
+    "projectApplicationIds": [
+      "com.aura.news.ads.unity",
+      "com.aura.lockscreen",
+      "com.aura.news.ads.ironsource",
+      "com.ironsource.aura.analytics",
+      "com.aura.news.dailyhub",
+      "com.aura.news.ads.applovin",
+      "com.aura.news.ads.mintegral",
+      "com.aura.news.ads.meta",
+      "com.aura.news.ads.liftoff",
+      "com.ironsource.aura.betteraurasdk",
+      "com.aura.webcomm",
+      "com.aura.news.current"
+    ]
+  },
+  "logcatMessages": [
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779040,
+          "nanos": 854000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: native, ad_unit_id: AU_29841, error_code: 204, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779055,
+          "nanos": 254000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Network request | endpoint=/api/v2/ads/fill | status=200 | latency_ms=140"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779077,
+          "nanos": 47000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "LockScreen session started | sessionId=s_953228 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779113,
+          "nanos": 103000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: rewarded_video, ad_unit_id: AU_77654, error_code: 1003, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779131,
+          "nanos": 483000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.betteraurasdk",
+        "processName": "com.ironsource.aura.betteraurasdk"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_55102, load_time_ms: 723, auction_id: auc_92980}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779148,
+          "nanos": 86000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "event_name = ad_clicked\neventMap = {ad_type: native, ad_unit_id: AU_55102, country: FR, click_type: cta_button}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779168,
+          "nanos": 746000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.ads.applovin",
+        "processName": "com.aura.news.ads.applovin"
+      },
+      "message": "Feed refresh triggered | source=push | items_fetched=19 | latency_ms=314"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779188,
+          "nanos": 400000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=306"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779215,
+          "nanos": 293000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.dailyhub",
+        "processName": "com.aura.news.dailyhub"
+      },
+      "message": "Ad request timeout | ad_unit=AU_10241 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779241,
+          "nanos": 369000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "event_name = ad_clicked\neventMap = {ad_type: native, ad_unit_id: AU_29841, country: IL, click_type: cta_button}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779271,
+          "nanos": 924000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.ironsource.aura.betteraurasdk",
+        "processName": "com.ironsource.aura.betteraurasdk"
+      },
+      "message": "Event dispatched | name=screen_view | screen=lockscreen_feed | session=s_731341"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779309,
+          "nanos": 999000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "LockScreen session started | sessionId=s_747483 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779353,
+          "nanos": 386000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=174"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779381,
+          "nanos": 33000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "event_name = ad_clicked\neventMap = {ad_type: interstitial, ad_unit_id: AU_77654, country: KR, click_type: cta_button}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779416,
+          "nanos": 459000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779434,
+          "nanos": 531000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Event dispatched | name=screen_view | screen=lockscreen_feed | session=s_600640"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779445,
+          "nanos": 796000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: native, ad_unit_id: AU_99881, error_code: 509, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779450,
+          "nanos": 816000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=rewarded_interstitial | revenue=0.563 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779494,
+          "nanos": 686000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: interstitial, ad_unit_id: AU_77654, error_code: 2001, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779506,
+          "nanos": 723000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=318"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779542,
+          "nanos": 5000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: banner, ad_unit_id: AU_99881, load_time_ms: 103, auction_id: auc_88669}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779557,
+          "nanos": 53000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "DEBUG",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Activity paused  | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779586,
+          "nanos": 440000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.dailyhub",
+        "processName": "com.aura.news.dailyhub"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_77654, error_code: 509, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779596,
+          "nanos": 42000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "Network request | endpoint=/api/v2/ads/fill | status=200 | latency_ms=286"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779633,
+          "nanos": 142000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "Network request | endpoint=/api/v2/ads/fill | status=200 | latency_ms=205"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779674,
+          "nanos": 700000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_10241, load_time_ms: 329, auction_id: auc_86093}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779714,
+          "nanos": 326000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779734,
+          "nanos": 437000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=96"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779764,
+          "nanos": 726000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779772,
+          "nanos": 961000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=rewarded_interstitial | revenue=1.166 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779817,
+          "nanos": 984000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779845,
+          "nanos": 272000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "Activity resumed | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779882,
+          "nanos": 75000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "LockScreen session started | sessionId=s_395910 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779884,
+          "nanos": 61000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_10382, error_code: 204, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779911,
+          "nanos": 257000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: native, ad_unit_id: AU_55102, load_time_ms: 627, auction_id: auc_79184}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779936,
+          "nanos": 542000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: interstitial, ad_unit_id: AU_77654, load_time_ms: 617, auction_id: auc_69617}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779939,
+          "nanos": 265000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "event_name = ad_impression\neventMap = {ad_type: rewarded_interstitial, revenue: 0.12, ad_unit_id: AU_10241, country: AU, fill_time_ms: 150}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779952,
+          "nanos": 636000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "event_name = ad_impression\neventMap = {ad_type: rewarded_video, revenue: 0.50, ad_unit_id: AU_99881, country: CA, fill_time_ms: 104}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758779965,
+          "nanos": 528000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "LockScreen session started | sessionId=s_193091 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780003,
+          "nanos": 526000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "Activity resumed | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780048,
+          "nanos": 2000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "Activity resumed | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780059,
+          "nanos": 815000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "LockScreen session started | sessionId=s_979827 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780095,
+          "nanos": 41000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.dailyhub",
+        "processName": "com.aura.news.dailyhub"
+      },
+      "message": "event_name = ad_clicked\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_10382, country: DE, click_type: cta_button}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780103,
+          "nanos": 212000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=native | revenue=0.678 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780122,
+          "nanos": 896000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=137"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780150,
+          "nanos": 218000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.ironsource.aura.betteraurasdk",
+        "processName": "com.ironsource.aura.betteraurasdk"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=217"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780178,
+          "nanos": 354000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Activity paused  | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780186,
+          "nanos": 753000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_55102, load_time_ms: 737, auction_id: auc_46977}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780203,
+          "nanos": 95000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "LockScreen session started | sessionId=s_644144 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780233,
+          "nanos": 874000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Ad request timeout | ad_unit=AU_10382 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780273,
+          "nanos": 765000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "Event dispatched | name=screen_view | screen=lockscreen_feed | session=s_319697"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780291,
+          "nanos": 175000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: rewarded_video, ad_unit_id: AU_29841, error_code: 204, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780316,
+          "nanos": 43000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Activity paused  | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780356,
+          "nanos": 891000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Event dispatched | name=screen_view | screen=lockscreen_feed | session=s_919064"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780362,
+          "nanos": 444000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=banner | revenue=0.229 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780392,
+          "nanos": 804000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=rewarded_interstitial | revenue=1.087 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780414,
+          "nanos": 716000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.applovin",
+        "processName": "com.aura.news.ads.applovin"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=rewarded_interstitial | revenue=0.830 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780453,
+          "nanos": 637000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=banner | revenue=0.374 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780492,
+          "nanos": 240000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "LockScreen session started | sessionId=s_478697 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780506,
+          "nanos": 44000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "event_name = ad_impression\neventMap = {ad_type: rewarded_interstitial, revenue: 0.91, ad_unit_id: AU_77654, country: BR, fill_time_ms: 97}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780535,
+          "nanos": 86000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "INFO",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Activity resumed | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780567,
+          "nanos": 337000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.betteraurasdk",
+        "processName": "com.ironsource.aura.betteraurasdk"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_29841, load_time_ms: 423, auction_id: auc_14229}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780607,
+          "nanos": 799000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Activity resumed | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780617,
+          "nanos": 271000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraBidding",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Auction completed | winner=unity | bid_price=0.828 | auction_id=auc_97511"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780629,
+          "nanos": 281000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Ad request timeout | ad_unit=AU_10241 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780659,
+          "nanos": 366000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraBidding",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "Auction completed | winner=unity | bid_price=1.189 | auction_id=auc_76415"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780665,
+          "nanos": 44000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "AuraBidding",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Auction completed | winner=mintegral | bid_price=0.199 | auction_id=auc_87976"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780685,
+          "nanos": 317000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=native | revenue=0.467 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780686,
+          "nanos": 988000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Ad request timeout | ad_unit=AU_99881 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780713,
+          "nanos": 524000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "Activity paused  | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780758,
+          "nanos": 446000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "event_name = ad_impression\neventMap = {ad_type: interstitial, revenue: 0.24, ad_unit_id: AU_10241, country: CA, fill_time_ms: 303}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780765,
+          "nanos": 339000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=91"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780777,
+          "nanos": 789000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "event_name = ad_impression\neventMap = {ad_type: banner, revenue: 1.17, ad_unit_id: AU_99881, country: CA, fill_time_ms: 202}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780807,
+          "nanos": 584000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "Activity paused  | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780845,
+          "nanos": 217000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.ironsource.aura.betteraurasdk",
+        "processName": "com.ironsource.aura.betteraurasdk"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=49"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780851,
+          "nanos": 262000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: native, ad_unit_id: AU_10241, load_time_ms: 248, auction_id: auc_40940}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780858,
+          "nanos": 464000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_99881, load_time_ms: 105, auction_id: auc_92896}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780874,
+          "nanos": 963000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "event_name = ad_impression\neventMap = {ad_type: banner, revenue: 0.85, ad_unit_id: AU_10382, country: GB, fill_time_ms: 375}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780884,
+          "nanos": 19000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.applovin",
+        "processName": "com.aura.news.ads.applovin"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: banner, ad_unit_id: AU_77654, load_time_ms: 263, auction_id: auc_64399}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780923,
+          "nanos": 749000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=73"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758780968,
+          "nanos": 130000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "Event dispatched | name=screen_view | screen=lockscreen_feed | session=s_879720"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781008,
+          "nanos": 612000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781015,
+          "nanos": 613000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=interstitial | revenue=1.144 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781019,
+          "nanos": 367000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Feed refresh triggered | source=push | items_fetched=5 | latency_ms=95"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781048,
+          "nanos": 216000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "LockScreen session started | sessionId=s_877601 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781058,
+          "nanos": 531000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "DEBUG",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "Activity paused  | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781082,
+          "nanos": 7000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Network request | endpoint=/api/v2/ads/fill | status=200 | latency_ms=316"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781126,
+          "nanos": 468000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781166,
+          "nanos": 729000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Network request | endpoint=/api/v2/ads/fill | status=200 | latency_ms=52"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781197,
+          "nanos": 668000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Activity resumed | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781227,
+          "nanos": 310000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "Network request | endpoint=/api/v2/ads/fill | status=200 | latency_ms=228"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781236,
+          "nanos": 309000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_video, ad_unit_id: AU_77654, load_time_ms: 293, auction_id: auc_68576}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781253,
+          "nanos": 660000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: banner, ad_unit_id: AU_77654, error_code: 1003, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781259,
+          "nanos": 1000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=interstitial | revenue=0.069 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781292,
+          "nanos": 95000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.dailyhub",
+        "processName": "com.aura.news.dailyhub"
+      },
+      "message": "Ad request timeout | ad_unit=AU_55102 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781335,
+          "nanos": 620000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraLifecycle",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "Activity paused  | component=LockScreenActivity | pid=14001"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781369,
+          "nanos": 409000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: rewarded_video, ad_unit_id: AU_10382, error_code: 1003, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781375,
+          "nanos": 74000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.ironsource",
+        "processName": "com.aura.news.ads.ironsource"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781420,
+          "nanos": 197000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.applovin",
+        "processName": "com.aura.news.ads.applovin"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=31"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781432,
+          "nanos": 826000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=320"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781471,
+          "nanos": 809000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Ad request timeout | ad_unit=AU_99881 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781506,
+          "nanos": 806000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Feed refresh triggered | source=push | items_fetched=6 | latency_ms=42"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781547,
+          "nanos": 697000000
+        },
+        "pid": 14001,
+        "tid": 14004,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.applovin",
+        "processName": "com.aura.news.ads.applovin"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_29841, error_code: 1003, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781569,
+          "nanos": 714000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Feed refresh triggered | source=push | items_fetched=10 | latency_ms=114"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781599,
+          "nanos": 690000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.applovin",
+        "processName": "com.aura.news.ads.applovin"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_29841, load_time_ms: 443, auction_id: auc_56496}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781612,
+          "nanos": 225000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "WARN",
+        "tag": "AuraNetworking",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Network retry | endpoint=/api/v2/ads/fill | attempt=2 | reason=timeout"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781620,
+          "nanos": 507000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_99881, error_code: 204, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781632,
+          "nanos": 668000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Event dispatched | name=ad_revenue | ad_type=banner | revenue=0.560 | currency=USD"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781654,
+          "nanos": 926000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.news.dailyhub",
+        "processName": "com.aura.news.dailyhub"
+      },
+      "message": "Ad request timeout | ad_unit=AU_55102 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781662,
+          "nanos": 369000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.unity",
+        "processName": "com.aura.news.ads.unity"
+      },
+      "message": "event_name = ad_impression\neventMap = {ad_type: rewarded_video, revenue: 0.65, ad_unit_id: AU_29841, country: US, fill_time_ms: 274}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781680,
+          "nanos": 93000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "INFO",
+        "tag": "AuraNetworking",
+        "applicationId": "com.aura.news.ads.liftoff",
+        "processName": "com.aura.news.ads.liftoff"
+      },
+      "message": "Network request | endpoint=/api/v2/feed/items | status=200 | latency_ms=161"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781697,
+          "nanos": 508000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "WARN",
+        "tag": "AuraSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "Ad request timeout | ad_unit=AU_99881 | timeout_ms=5000 | retry=1"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781715,
+          "nanos": 841000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "LockScreen session started | sessionId=s_837021 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781755,
+          "nanos": 61000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.ironsource.aura.analytics",
+        "processName": "com.ironsource.aura.analytics"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_video, ad_unit_id: AU_10241, load_time_ms: 363, auction_id: auc_10391}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781765,
+          "nanos": 855000000
+        },
+        "pid": 14001,
+        "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.ads.applovin",
+        "processName": "com.aura.news.ads.applovin"
+      },
+      "message": "event_name = ad_load_success\neventMap = {ad_type: rewarded_interstitial, ad_unit_id: AU_10382, load_time_ms: 510, auction_id: auc_16575}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781805,
+          "nanos": 424000000
+        },
+        "pid": 14001,
+        "tid": 14002,
+        "logLevel": "INFO",
+        "tag": "AuraSDK",
+        "applicationId": "com.aura.webcomm",
+        "processName": "com.aura.webcomm"
+      },
+      "message": "LockScreen session started | sessionId=s_192794 | theme=dark | platform=android"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781839,
+          "nanos": 384000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraAnalytics",
+        "applicationId": "com.aura.news.ads.meta",
+        "processName": "com.aura.news.ads.meta"
+      },
+      "message": "Event dispatched | name=screen_view | screen=lockscreen_feed | session=s_712064"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781873,
+          "nanos": 100000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraBidding",
+        "applicationId": "com.aura.lockscreen",
+        "processName": "com.aura.lockscreen"
+      },
+      "message": "Auction completed | winner=mintegral | bid_price=0.460 | auction_id=auc_36944"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781895,
+          "nanos": 119000000
+        },
+        "pid": 14001,
+        "tid": 14003,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK",
+        "applicationId": "com.aura.news.current",
+        "processName": "com.aura.news.current"
+      },
+      "message": "event_name = ad_load_failed\neventMap = {ad_type: banner, ad_unit_id: AU_55102, error_code: 2001, error_message: no_fill}"
+    },
+    {
+      "header": {
+        "timestamp": {
+          "seconds": 1758781940,
+          "nanos": 407000000
+        },
+        "pid": 14001,
+        "tid": 14005,
+        "logLevel": "DEBUG",
+        "tag": "AuraBidding",
+        "applicationId": "com.aura.news.ads.mintegral",
+        "processName": "com.aura.news.ads.mintegral"
+      },
+      "message": "Auction completed | winner=liftoff | bid_price=0.338 | auction_id=auc_97061"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "logcatMessages": [
+    {
+      "header": {
+        "timestamp": { "seconds": 1758779030, "nanos": 120000000 },
+        "pid": 14001, "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK"
+      },
+      "message": "event_name = ad_impression\nevent_type = rewarded_video\nsession_id = s_a1b2c3\neventMap = {country: US, revenue: 0.45, ad_unit_id: AU_12345, ad_type: rewarded, app_id: com.example.mobilegame, fill_time_ms: 234, sdk_version: 7.3.1}"
+    },
+    {
+      "header": {
+        "timestamp": { "seconds": 1758779045, "nanos": 880000000 },
+        "pid": 14001, "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK"
+      },
+      "message": "event_name = ad_clicked\nevent_type = rewarded_video\nsession_id = s_a1b2c3\neventMap = {country: US, ad_unit_id: AU_12345, ad_type: rewarded, app_id: com.example.mobilegame, click_type: cta_button}"
+    },
+    {
+      "header": {
+        "timestamp": { "seconds": 1758779105, "nanos": 300000000 },
+        "pid": 14001, "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK"
+      },
+      "message": "event_name = ad_load_success\nevent_type = interstitial\nsession_id = s_a1b2c3\neventMap = {ad_unit_id: AU_99881, ad_type: interstitial, app_id: com.example.mobilegame, load_time_ms: 412, auction_id: auc_55321}"
+    },
+    {
+      "header": {
+        "timestamp": { "seconds": 1758779210, "nanos": 550000000 },
+        "pid": 14001, "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK"
+      },
+      "message": "event_name = ad_impression\nevent_type = interstitial\nsession_id = s_d4e5f6\neventMap = {country: DE, revenue: 0.12, ad_unit_id: AU_99881, ad_type: interstitial, app_id: com.example.mobilegame, fill_time_ms: 189, sdk_version: 7.3.1}"
+    },
+    {
+      "header": {
+        "timestamp": { "seconds": 1758779350, "nanos": 700000000 },
+        "pid": 14001, "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK"
+      },
+      "message": "event_name = session_start\nevent_type = lifecycle\nsession_id = s_g7h8i9\neventMap = {app_id: com.example.mobilegame, country: IL, platform: android, os_version: 12, device_model: Pixel 3, sdk_version: 7.3.1}"
+    },
+    {
+      "header": {
+        "timestamp": { "seconds": 1758779410, "nanos": 200000000 },
+        "pid": 14001, "tid": 14001,
+        "logLevel": "DEBUG",
+        "tag": "IronSourceSDK"
+      },
+      "message": "event_name = ad_load_failed\nevent_type = banner\nsession_id = s_g7h8i9\neventMap = {ad_unit_id: AU_77654, ad_type: banner, app_id: com.example.mobilegame, error_code: 509, error_message: no_fill, sdk_version: 7.3.1}"
+    }
+  ]
+}

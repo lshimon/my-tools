@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📄 Logcat JSON Viewer</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #fff;
+      color: #000;
+      padding: 10px;
+    }
+    body.dark {
+      background: #1e1e1e;
+      color: #eee;
+    }
+    h2 { margin-bottom: 10px; }
+    input[type="file"] { margin-bottom: 10px; }
+    label { margin-left: 10px; font-size: 14px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px;
+      vertical-align: top;
+      font-size: 12px;
+      text-align: left;
+    }
+    th { background: #f0f0f0; }
+    body.dark th { background: #333; }
+    tr.INFO { background: #e6f7ff; }
+    tr.DEBUG { background: #f9f9f9; }
+    tr.WARN { background: #fffacc; }
+    tr.ERROR { background: #ffe6e6; }
+    tr.VERBOSE { background: #f7f7f7; }
+    body.dark tr.INFO { background: #1a3a4a; }
+    body.dark tr.DEBUG { background: #2a2a2a; }
+    body.dark tr.WARN { background: #665500; }
+    body.dark tr.ERROR { background: #552222; }
+    body.dark tr.VERBOSE { background: #222; }
+    .message-cell {
+      max-width: 600px;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+  </style>
+</head>
+<body>
+  <h2>📄 Logcat JSON Viewer</h2>
+  <input type="file" id="fileInput" />
+  <label><input type="checkbox" id="darkToggle"> Dark mode</label>
+
+  <table>
+    <thead>
+      <tr><th>Time</th><th>PID</th><th>TID</th><th>Level</th><th>Tag</th><th>App ID</th><th>Process</th><th>Message</th></tr>
+    </thead>
+    <tbody id="logBody"></tbody>
+  </table>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const logBody = document.getElementById('logBody');
+    document.getElementById('darkToggle').addEventListener('change', e => {
+      document.body.classList.toggle('dark', e.target.checked);
+    });
+
+    fileInput.addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const root = JSON.parse(e.target.result);
+          const messages = root.logcatMessages || [];
+          logBody.innerHTML = '';
+          let parsed = 0;
+
+          for (const obj of messages) {
+            try {
+              const h = obj.header || {};
+              const ts = h.timestamp
+                ? new Date(h.timestamp.seconds * 1000 + Math.floor(h.timestamp.nanos / 1e6)).toISOString()
+                : '-';
+              const msg = (obj.message || '').replaceAll('\u003d', '=')
+                                             .replaceAll('\u003d', '=')
+                                             .replaceAll('\u0027', "'");
+              const tr = document.createElement('tr');
+              tr.className = (h.logLevel || '').toUpperCase();
+              tr.innerHTML = `
+                <td>${ts}</td>
+                <td>${h.pid || '-'}</td>
+                <td>${h.tid || '-'}</td>
+                <td>${h.logLevel || '-'}</td>
+                <td>${h.tag || '-'}</td>
+                <td>${h.applicationId || '-'}</td>
+                <td>${h.processName || '-'}</td>
+                <td class="message-cell">${msg}</td>
+              `;
+              logBody.appendChild(tr);
+              parsed++;
+            } catch (err) {
+              console.warn('⚠️ Skipped malformed entry', err);
+            }
+          }
+
+          console.log(`✅ Parsed ${parsed} structured log entries.`);
+        } catch (e) {
+          console.error('Failed to parse uploaded file as structured logcat JSON');
+        }
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shimon Leizerovich — QA Tools</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      min-height: 100vh;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      max-width: 880px;
+      margin: 0 auto 52px;
+      border-bottom: 1px solid #21262d;
+      padding-bottom: 32px;
+    }
+    header h1 { font-size: 26px; font-weight: 600; color: #f0f6fc; letter-spacing: -0.3px; margin-bottom: 8px; }
+    header p  { font-size: 14px; color: #8b949e; line-height: 1.6; max-width: 600px; }
+    .badge {
+      display: inline-block; margin-top: 14px;
+      font-size: 11px; font-weight: 500;
+      background: #161b22; border: 1px solid #30363d; border-radius: 20px;
+      padding: 4px 12px; color: #58a6ff;
+    }
+
+    /* ── Section ── */
+    section { max-width: 880px; margin: 0 auto 44px; }
+    section h2 {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; color: #8b949e;
+      margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid #21262d;
+    }
+
+    /* ── Grid ── */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(248px, 1fr)); gap: 14px; }
+
+    /* ── Card ── */
+    .card {
+      background: #161b22; border: 1px solid #21262d; border-radius: 8px;
+      padding: 18px 20px 16px;
+      display: flex; flex-direction: column; gap: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .card:hover { border-color: #388bfd40; box-shadow: 0 0 0 1px #388bfd20; }
+    .card-icon  { font-size: 20px; line-height: 1; }
+    .card-title { font-size: 14px; font-weight: 600; color: #f0f6fc; }
+    .card-desc  { font-size: 12px; color: #8b949e; line-height: 1.5; flex: 1; }
+
+    .card-meta { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+    .tag { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 12px; border: 1px solid; }
+    .tag-html  { color: #79c0ff; border-color: #79c0ff30; background: #79c0ff0a; }
+    .tag-shell { color: #d2a8ff; border-color: #d2a8ff30; background: #d2a8ff0a; }
+    .tag-v2    { color: #3fb950; border-color: #3fb95030; background: #3fb9500a; }
+
+    /* ── Buttons ── */
+    .btn-row { display: flex; align-items: center; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 12px; font-weight: 500;
+      padding: 6px 12px; border-radius: 6px;
+      text-decoration: none; cursor: pointer;
+      border: 1px solid #30363d; background: #21262d; color: #c9d1d9;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .btn:hover { background: #30363d; border-color: #8b949e; color: #f0f6fc; }
+    .btn-primary { background: #1f6feb; border-color: #388bfd; color: #fff; }
+    .btn-primary:hover { background: #388bfd; }
+    .btn-ghost {
+      background: transparent; border-color: #30363d; color: #8b949e;
+      padding: 6px 10px; font-size: 11px;
+    }
+    .btn-ghost:hover { color: #c9d1d9; border-color: #58a6ff; }
+
+    /* ── Versions row ── */
+    .versions { display: flex; flex-wrap: wrap; gap: 6px; }
+    .versions a {
+      font-size: 11px; padding: 3px 10px; border-radius: 5px;
+      border: 1px solid #30363d; color: #8b949e; text-decoration: none;
+      background: #0d1117; transition: color 0.1s, border-color 0.1s;
+    }
+    .versions a:hover { color: #c9d1d9; border-color: #58a6ff; }
+
+    /* ── Sample data callout ── */
+    .sample-box {
+      background: #161b22; border: 1px solid #3fb95030;
+      border-left: 3px solid #3fb950; border-radius: 6px;
+      padding: 12px 16px; font-size: 12px; color: #8b949e;
+      line-height: 1.7; margin-bottom: 16px;
+    }
+    .sample-box strong { color: #3fb950; }
+    .sample-box code {
+      font-family: 'Menlo', 'Consolas', monospace; font-size: 11px;
+      background: #0d1117; padding: 1px 5px; border-radius: 3px; color: #c9d1d9;
+    }
+
+    /* ── Shell card ── */
+    .shell-cmd {
+      font-family: 'Menlo', 'Consolas', monospace; font-size: 11px;
+      background: #0d1117; border: 1px solid #21262d; border-radius: 5px;
+      padding: 8px 12px; color: #3fb950; margin-top: 4px;
+    }
+
+    /* ════════════════════════════════════════════
+       PREVIEW PANEL (right-side drawer)
+    ════════════════════════════════════════════ */
+    #preview-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 90;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.25s;
+    }
+    #preview-backdrop.open { opacity: 1; pointer-events: all; }
+
+    #preview-panel {
+      position: fixed; top: 0; right: 0;
+      width: 62%; height: 100vh;
+      background: #0d1117;
+      border-left: 1px solid #30363d;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.4,0,0.2,1);
+      z-index: 100;
+      display: flex; flex-direction: column;
+    }
+    #preview-panel.open { transform: translateX(0); }
+
+    #preview-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #21262d;
+      background: #161b22;
+      flex-shrink: 0;
+    }
+    #preview-title { font-size: 13px; font-weight: 600; color: #f0f6fc; }
+    #preview-header .actions { display: flex; gap: 8px; align-items: center; }
+
+    #preview-iframe {
+      flex: 1; border: none; width: 100%;
+      background: #fff;
+    }
+
+    #preview-loading {
+      position: absolute; top: 46px; left: 0; right: 0; bottom: 0;
+      display: flex; align-items: center; justify-content: center;
+      background: #0d1117; color: #8b949e; font-size: 13px;
+      pointer-events: none; transition: opacity 0.2s;
+    }
+
+    /* ════════════════════════════════════════════
+       SCRIPT MODAL
+    ════════════════════════════════════════════ */
+    #script-modal {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 200;
+      display: none; align-items: center; justify-content: center;
+      padding: 24px;
+    }
+    #script-modal.open { display: flex; }
+
+    #script-container {
+      width: 100%; max-width: 780px; height: 82vh;
+      background: #0d1117;
+      border: 1px solid #30363d; border-radius: 10px;
+      display: flex; flex-direction: column; overflow: hidden;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6);
+    }
+
+    #script-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; background: #161b22;
+      border-bottom: 1px solid #30363d; flex-shrink: 0;
+    }
+    #script-header .title-area { display: flex; align-items: center; gap: 10px; }
+    #script-header .filename {
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 13px; font-weight: 600; color: #f0f6fc;
+    }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .dot-red    { background: #ff5f57; }
+    .dot-yellow { background: #febc2e; }
+    .dot-green  { background: #28c840; }
+    .dot-row    { display: flex; gap: 6px; align-items: center; }
+
+    #script-body {
+      flex: 1; overflow-y: auto; overflow-x: auto;
+      padding: 20px 24px;
+    }
+    #script-body::-webkit-scrollbar { width: 6px; height: 6px; }
+    #script-body::-webkit-scrollbar-track { background: transparent; }
+    #script-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+
+    .code-block {
+      font-family: 'Menlo', 'Consolas', monospace;
+      font-size: 12px; line-height: 1.7;
+      counter-reset: line;
+      min-width: max-content;
+    }
+    .code-line {
+      display: flex; gap: 0;
+      counter-increment: line;
+    }
+    .code-line:hover { background: #161b22; border-radius: 3px; }
+    .ln {
+      min-width: 38px; text-align: right; padding-right: 16px;
+      color: #3d444d; user-select: none; flex-shrink: 0;
+      font-size: 11px; padding-top: 1px;
+    }
+    .lc { flex: 1; white-space: pre; color: #c9d1d9; }
+
+    /* Syntax colors */
+    .sh-comment  { color: #656d76; font-style: italic; }
+    .sh-keyword  { color: #ff7b72; }
+    .sh-builtin  { color: #79c0ff; }
+    .sh-string   { color: #a5d6ff; }
+    .sh-var      { color: #56d364; }
+    .sh-shebang  { color: #d2a8ff; font-weight: 600; }
+    .sh-section  { color: #e3b341; font-style: italic; }
+
+    #script-footer {
+      padding: 10px 16px;
+      border-top: 1px solid #21262d;
+      background: #161b22;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    #script-footer .meta { font-size: 11px; color: #656d76; }
+
+    #copy-btn {
+      font-size: 11px; padding: 5px 12px; border-radius: 5px;
+      border: 1px solid #30363d; background: #21262d; color: #8b949e;
+      cursor: pointer; transition: all 0.12s;
+    }
+    #copy-btn:hover { background: #30363d; color: #c9d1d9; }
+    #copy-btn.copied { border-color: #3fb950; color: #3fb950; }
+  </style>
+</head>
+<body>
+
+<!-- ════ PREVIEW PANEL ════ -->
+<div id="preview-backdrop" onclick="closePreview()"></div>
+<div id="preview-panel">
+  <div id="preview-header">
+    <span id="preview-title">Tool Preview</span>
+    <div class="actions">
+      <a id="preview-open-link" href="#" target="_blank" class="btn btn-ghost">↗ Open Full</a>
+      <button class="btn btn-ghost" onclick="closePreview()">✕ Close</button>
+    </div>
+  </div>
+  <div id="preview-loading">Loading tool...</div>
+  <iframe id="preview-iframe" src="about:blank" onload="hideLoading()"></iframe>
+</div>
+
+<!-- ════ SCRIPT MODAL ════ -->
+<div id="script-modal" onclick="handleModalClick(event)">
+  <div id="script-container">
+    <div id="script-header">
+      <div class="title-area">
+        <div class="dot-row">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-yellow"></span>
+          <span class="dot dot-green"></span>
+        </div>
+        <span class="filename">pac-tool.sh</span>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button id="copy-btn" onclick="copyScript()">Copy</button>
+        <button class="btn btn-ghost" onclick="closeScript()" style="padding:5px 10px;font-size:11px;">✕</button>
+      </div>
+    </div>
+    <div id="script-body">
+      <div class="code-block" id="code-block"></div>
+    </div>
+    <div id="script-footer">
+      <span class="meta">bash &nbsp;·&nbsp; 362 lines &nbsp;·&nbsp; PAC (Power and Consumption) Testing Tool v1.0</span>
+    </div>
+  </div>
+</div>
+
+<!-- ════ PAGE CONTENT ════ -->
+
+<div id="file-banner" style="display:none; max-width:880px; margin:0 auto 24px; background:#161b22; border:1px solid #e3b34140; border-left:3px solid #e3b341; border-radius:6px; padding:12px 16px; font-size:12px; color:#8b949e; line-height:1.6;">
+  <strong style="color:#e3b341;">Run via localhost</strong> for auto-loading demo data.
+  Chrome blocks iframe injection when opened as a file. One command:
+  <code style="display:block; margin-top:6px; background:#0d1117; padding:6px 10px; border-radius:4px; color:#3fb950; font-family:Menlo,Consolas,monospace; font-size:11px;">bash /Users/shimonleizerovich/Documents/myworktools/start-demo.sh</code>
+</div>
+
+<header>
+  <h1>QA Internal Tools</h1>
+  <p>
+    Built and iterated on during 3 years of QA work at ironSource / Unity (2022–2025).
+    Each tool replaced a repetitive manual step, designed to run locally in any browser with no dependencies.
+  </p>
+  <span class="badge">17 tools &nbsp;·&nbsp; HTML / JS / Shell &nbsp;·&nbsp; Vanilla, zero frameworks</span>
+</header>
+
+<!-- ── LOG ANALYSIS ── -->
+<section>
+  <h2>Log Analysis</h2>
+  <div class="sample-box">
+    <strong>Demo data pre-loaded.</strong> Click Preview — the tool opens with a real-shaped SDK event already parsed. No file upload needed.
+  </div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <div class="card-title">LogV</div>
+      <div class="card-desc">
+        Paste or load a raw Android logcat. Color-codes lines by log level (D/I/W/E).
+        Filter by keyword. Scan crash traces fast without opening Android Studio.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-html">HTML</span>
+        <span class="tag tag-v2">original</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('logV.html','LogV')">▶ Preview</button>
+        <a class="btn btn-ghost" href="logV.html" target="_blank">↗</a>
+      </div>
+      <div class="versions">
+        <a href="#" onclick="openPreview('logV-v2.html','LogV v2');return false;">v2</a>
+        <a href="#" onclick="openPreview('LogV-2.html','LogV v2-alt');return false;">v2-alt</a>
+        <a href="#" onclick="openPreview('logV-Wsearch.html','LogV + Search');return false;">+ search</a>
+        <a href="#" onclick="openPreview('logV-workers.html','LogV Workers');return false;">+ workers</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📄</div>
+      <div class="card-title">Event Extractor</div>
+      <div class="card-desc">
+        Paste a logcat or log dump. Extracts and tables all SDK event lines.
+        Filter by event name, search across fields. Built for ad-event validation.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('eventExtractor.html','Event Extractor')">▶ Preview</button>
+        <a class="btn btn-ghost" href="eventExtractor.html" target="_blank">↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── AD QUALITY ── -->
+<section>
+  <h2>Ad Quality Verification</h2>
+  <div class="sample-box">
+    <strong>Demo data pre-loaded.</strong> Click Preview — the tool opens with 50 real-shaped ad rows already in the table. No file upload needed.
+  </div>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <div class="card-title">Ad Quality Verifier</div>
+      <div class="card-desc">
+        Import a CSV of ad IDs and metadata. Renders a searchable table.
+        Cross-reference ad IDs against expected values during production validation.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span><span class="tag tag-v2">base</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('verify_advid.html','Ad Quality Verifier')">▶ Preview</button>
+        <a class="btn btn-ghost" href="verify_advid.html" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🖱️</div>
+      <div class="card-title">Ad Verifier + Buttons</div>
+      <div class="card-desc">
+        Extended version: inline approve / reject actions per row.
+        Used for iterative manual review sessions where decisions need to be recorded.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span><span class="tag tag-v2">v2</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('verfiyAdvidWithButtons.html','Ad Verifier + Buttons')">▶ Preview</button>
+        <a class="btn btn-ghost" href="verfiyAdvidWithButtons.html" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🖼️</div>
+      <div class="card-title">Ad Verifier + Image Hover</div>
+      <div class="card-desc">
+        Same verifier, with ad creative thumbnails on hover.
+        Fast visual inspection without leaving the tab.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span><span class="tag tag-v2">v3</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('verfiyAdvidWithImgHover.html','Ad Verifier + Image Hover')">▶ Preview</button>
+        <a class="btn btn-ghost" href="verfiyAdvidWithImgHover.html" target="_blank">↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FORMATTING ── -->
+<section>
+  <h2>Formatting & Inspection</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      <div class="card-title">JSON Viewer</div>
+      <div class="card-desc">
+        Paste any JSON string. Beautifies it, highlights structure, lets you expand / collapse nodes.
+        Used daily for reading API response payloads during integration testing.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('jsonV.html','JSON Viewer')">▶ Preview</button>
+        <a class="btn btn-ghost" href="jsonV.html" target="_blank">↗</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🐛</div>
+      <div class="card-title">Jira Ticket Formatter</div>
+      <div class="card-desc">
+        Fill in a structured bug report form. Generates a ready-to-paste Jira description
+        with steps to reproduce, expected vs. actual, environment details.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span><span class="tag tag-v2">original</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('JTformatter.html','Jira Ticket Formatter')">▶ Preview</button>
+        <a class="btn btn-ghost" href="JTformatter.html" target="_blank">↗</a>
+      </div>
+      <div class="versions">
+        <a href="#" onclick="openPreview('JTformatter-2.html','Jira Formatter v2');return false;">v2 (extended)</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">✏️</div>
+      <div class="card-title">Text Improvement Tool</div>
+      <div class="card-desc">
+        Paste internal text (bug descriptions, comments, summaries). Returns a cleaner version.
+        Used for polishing Jira comments and status updates before sending.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('TextImprove.html','Text Improvement Tool')">▶ Preview</button>
+        <a class="btn btn-ghost" href="TextImprove.html" target="_blank">↗</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── UTILITIES ── -->
+<section>
+  <h2>Utilities</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">⏱️</div>
+      <div class="card-title">Smart Countdown Timer</div>
+      <div class="card-desc">
+        Configurable countdown with presets for common test durations.
+        Plays a sound and shows a visual alert when time is up. Used for time-boxed test sessions.
+      </div>
+      <div class="card-meta"><span class="tag tag-html">HTML</span><span class="tag tag-v2">v2</span></div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('countD.html','Smart Countdown Timer')">▶ Preview</button>
+        <a class="btn btn-ghost" href="countD.html" target="_blank">↗</a>
+      </div>
+      <div class="versions">
+        <a href="#" onclick="openPreview('timer2.html','Timer v2');return false;">timer2</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SHELL ── -->
+<section>
+  <h2>Shell Scripts</h2>
+  <div class="grid">
+
+    <div class="card" style="grid-column: 1 / -1; max-width: 560px;">
+      <div class="card-icon">⚡</div>
+      <div class="card-title">PAC Tool</div>
+      <div class="card-desc">
+        Shell script for Android power consumption testing. Pulls battery stats via ADB,
+        spins up a Docker Battery Historian instance, and opens the report in the browser automatically.
+        Used for power regression tests on mobile ad formats.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-shell">Shell</span>
+        <span class="tag tag-html">ADB</span>
+        <span class="tag tag-html">Docker</span>
+      </div>
+      <div class="shell-cmd">bash pac-tool.sh</div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openScript()">⌨ View Script</button>
+        <a class="btn btn-ghost" href="pac-tool.sh" target="_blank">↗ Raw</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ EMBEDDED SCRIPT ════ -->
+<script type="text/plain" id="pac-raw">#!/bin/bash
+
+# ========================================================================
+# PAC (Power and Consumption) Testing Tool v1.0
+# ========================================================================
+#
+# WHAT THIS TOOL DOES:
+# 1. [SETUP] Resets device battery stats before testing
+# 2. [CREATE] Generates ADB bug reports with proper naming
+# 3. [VISUAL] Launches Battery Historian for visual analysis
+#
+# REQUIREMENTS:
+# - ADB installed and in PATH
+# - Docker Desktop (for visual reports)
+# - Android device connected via USB
+#
+# WORKFLOW:
+# 1. Run setup → Wait 4h 45m → Generate report → Analyze visually
+#
+# NOTE: Automated parsing was removed due to reliability issues.
+# Always use the visual Battery Historian for accurate metrics.
+# ========================================================================
+
+# --- Function to display the main menu ---
+show_menu() {
+    echo "======================================="
+    echo "  PAC (Power and Consumption) Tool v1.0"
+    echo "======================================="
+    echo "Please choose an option:"
+    echo "  1. [SETUP] Reset Device Stats (Before Wait)"
+    echo "  2. [CREATE] Generate Bug Report (After Wait)"
+    echo "  3. [VISUAL] Run Docker for Visual Report"
+    echo "  q. Quit"
+    echo "---------------------------------------"
+    echo "💡 Tip: Always use visual analysis for accurate results"
+    echo ""
+}
+
+# --- Function to execute commands and show their formatted output ---
+run_and_show_reply() {
+    echo "▶️ Running command: $1"
+    eval "$1" 2>&1 | while IFS= read -r line; do
+        echo "  ↩️  $line"
+    done
+    return ${PIPESTATUS[0]}
+}
+
+# --- Function for Step 1: Setup before the wait ---
+run_setup_before_wait() {
+    echo ""
+    echo "[TASK 1] Setting up the test..."
+    echo "---------------------------------------"
+
+    # Verify ADB is available
+    if ! command -v adb &> /dev/null; then
+        echo "❌ Error: ADB not found. Please install Android SDK Platform Tools."
+        echo "   Download: https://developer.android.com/studio/releases/platform-tools"
+        read -p "Press [Enter] to return to the main menu."
+        return
+    fi
+
+    # Check device connection
+    echo "🔍 Checking device connection..."
+    DEVICES=$(adb devices | grep -v "List of devices" | grep -c "device$")
+    if [ "$DEVICES" -eq 0 ]; then
+        echo "❌ Error: No Android device connected."
+        echo "   Please connect your device via USB and enable USB Debugging."
+        read -p "Press [Enter] to return to the main menu."
+        return
+    fi
+    echo "✅ Found $DEVICES connected device(s)"
+
+    echo "⚙️  Ensuring a fresh ADB connection..."
+    run_and_show_reply "adb kill-server"
+    run_and_show_reply "adb start-server"
+    sleep 2
+
+    echo "🔄 Resetting battery stats..."
+    run_and_show_reply "adb shell dumpsys batterystats --reset"
+
+    echo ""
+    echo "=========================================================="
+    echo "✅ SETUP COMPLETE."
+    echo ""
+    echo "📋 NEXT STEPS:"
+    echo "1. ➡️  UNPLUG THE DEVICE NOW"
+    echo "2. ⏰ START YOUR 4h 45m TIMER"
+    echo "3. 📱 Use the app normally during this period"
+    echo "4. 🔌 After timer ends, reconnect device"
+    echo "5. 🔄 Return here to generate the bug report"
+    echo "=========================================================="
+    echo ""
+    read -p "Press [Enter] to return to the main menu."
+}
+
+# --- Function for Step 2: Create the report after the wait ---
+run_create_after_wait() {
+    echo ""
+    echo "[TASK 2] Creating the bug report..."
+    echo "---------------------------------------"
+
+    if ! command -v adb &> /dev/null; then
+        echo "❌ Error: ADB not found."
+        read -p "Press [Enter] to return to the main menu."
+        return
+    fi
+
+    DEVICES=$(adb devices | grep -v "List of devices" | grep -c "device$")
+    if [ "$DEVICES" -eq 0 ]; then
+        echo "❌ Error: No Android device connected."
+        echo "   Please reconnect your device via USB."
+        read -p "Press [Enter] to return to the main menu."
+        return
+    fi
+
+    GAID=""
+    while [ -z "$GAID" ]; do
+      read -p "Enter the GAID: " GAID
+      if [ -z "$GAID" ]; then
+        echo "❌ GAID cannot be empty. Please try again."
+      fi
+    done
+
+    VERSION=""
+    while [ -z "$VERSION" ]; do
+      read -p "Enter the App Version (e.g., 4.2.0.0.1): " VERSION
+      if [ -z "$VERSION" ]; then
+        echo "❌ Version cannot be empty. Please try again."
+      fi
+    done
+
+    SAVE_PATH=""
+    while true; do
+      read -p "Enter save folder path (or press Enter for Desktop): " USER_PATH
+      if [ -z "$USER_PATH" ]; then
+        SAVE_PATH="$HOME/Desktop"
+        if [ -d "$SAVE_PATH" ]; then break
+        else echo "❌ Desktop folder not found."; continue; fi
+      elif [ -d "$USER_PATH" ]; then
+        SAVE_PATH="$USER_PATH"; break
+      else
+        echo "❌ Error: Folder '$USER_PATH' not found. Please try again."
+      fi
+    done
+    echo "✅ Report will be saved in: $SAVE_PATH"
+
+    DATE=$(date +%d%m%y)
+    FILENAME="pac_${GAID}_${VERSION}_${DATE}.zip"
+    FILEPATH="$SAVE_PATH/$FILENAME"
+
+    if [ -f "$FILEPATH" ]; then
+        echo "⚠️  File already exists: $FILENAME"
+        read -p "Overwrite? (y/N): " OVERWRITE
+        if [[ ! "$OVERWRITE" =~ ^[Yy]$ ]]; then
+            echo "❌ Operation cancelled."
+            read -p "Press [Enter] to return to the main menu."
+            return
+        fi
+    fi
+
+    echo ""
+    echo "⏳ Generating ADB bug report... This may take 5-10 minutes."
+    adb bugreport "$FILEPATH" > /dev/null 2>&1 &
+    PID=$!
+    SPINNER='|/-\'
+    i=0
+    while kill -0 $PID 2>/dev/null; do
+        i=$(( (i+1) %4 ))
+        printf "\r[%c] Generating report... Please wait" "${SPINNER:$i:1}"
+        sleep .3
+    done
+    printf "\r[✓] Report generation completed!\n"
+
+    if [ ! -f "$FILEPATH" ]; then
+      echo "❌ Error: Failed to create the bug report."
+    else
+      FILESIZE=$(ls -lh "$FILEPATH" | awk '{print $5}')
+      echo ""
+      echo "=========================================================="
+      echo "✅ Bug report created: $FILENAME ($FILESIZE)"
+      echo "📋 Next: use option 3 to launch Battery Historian"
+      echo "=========================================================="
+    fi
+    read -p "Press [Enter] to return to the main menu."
+}
+
+# --- Function for Step 3: Run Docker for the visual report ---
+run_docker_visual_report() {
+    echo ""
+    echo "[TASK 3] Starting Battery Historian Visual Tool..."
+    echo "---------------------------------------"
+
+    if ! command -v docker &> /dev/null; then
+        echo "❌ Error: Docker not found."
+        read -p "Press [Enter] to return to the main menu."
+        return
+    fi
+
+    echo "⚙️ Checking Docker status..."
+    docker info >/dev/null 2>&1
+    if [ $? -ne 0 ]; then
+        echo "❌ Error: Docker is not running. Start Docker Desktop and retry."
+        read -p "Press [Enter] to return to the main menu."
+        return
+    fi
+    echo "✅ Docker is running."
+
+    if lsof -Pi :9999 -sTCP:LISTEN -t >/dev/null 2>&1; then
+        echo "⚠️  Port 9999 in use — Battery Historian may already be running at http://localhost:9999"
+        read -p "Continue and stop existing container? (y/N): " CONTINUE
+        if [[ ! "$CONTINUE" =~ ^[Nn]$ ]]; then
+            docker stop $(docker ps -q --filter "ancestor=gcr.io/android-battery-historian/stable:3.1") 2>/dev/null || true
+        fi
+    fi
+
+    echo "🐳 Starting Battery Historian container..."
+    CONTAINER_ID=$(docker run -d -p 9999:9999 gcr.io/android-battery-historian/stable:3.1 2>/dev/null)
+
+    if [ $? -eq 0 ] && [ -n "$CONTAINER_ID" ]; then
+        echo ""
+        echo "=========================================================="
+        echo "🚀 Battery Historian running at: http://localhost:9999"
+        echo "📋 Upload your .zip report and review battery/network/wakelocks"
+        echo "🛑 To stop: docker stop $CONTAINER_ID"
+        echo "=========================================================="
+        if [[ "$OSTYPE" == "darwin"* ]]; then
+            read -p "Open browser automatically? (Y/n): " OPEN_BROWSER
+            if [[ ! "$OPEN_BROWSER" =~ ^[Nn]$ ]]; then
+                open "http://localhost:9999" 2>/dev/null
+            fi
+        fi
+    else
+        echo "❌ Failed to start container."
+    fi
+    read -p "Press [Enter] to return to the main menu."
+}
+
+# --- Welcome screen ---
+show_welcome() {
+    echo ""
+    echo "========================================================================"
+    echo "🔋 Welcome to PAC (Power and Consumption) Testing Tool v1.0"
+    echo "========================================================================"
+    echo ""
+    echo "📋 TESTING WORKFLOW:"
+    echo "1. Connect Android device via USB (enable USB Debugging)"
+    echo "2. Run [SETUP] to reset battery stats"
+    echo "3. Unplug device and wait 4h 45m while using the app"
+    echo "4. Reconnect device and run [CREATE] to generate report"
+    echo "5. Use [VISUAL] to analyze results with Battery Historian"
+    echo ""
+    echo "🎯 SUCCESS CRITERIA:"
+    echo "   Battery: <1% Green · <2% Yellow · >2% Red"
+    echo "   Network: <1MB Green · <10MB Yellow · >10MB Red"
+    echo "   Wakelocks: <10 Green · <50 Yellow · >50 Red"
+    echo "   Jobs: <5 Green · <20 Yellow · >20 Red"
+    echo "========================================================================"
+}
+
+# --- Main ---
+show_welcome
+while true; do
+    show_menu
+    read -p "Enter your choice: " choice
+    case $choice in
+        1) run_setup_before_wait ;;
+        2) run_create_after_wait ;;
+        3) run_docker_visual_report ;;
+        q|Q)
+            echo "👋 Goodbye."
+            exit 0 ;;
+        *)
+            echo "❌ Invalid option. Choose 1, 2, 3, or q."
+            sleep 1 ;;
+    esac
+done
+</script>
+
+<script>
+  // ── Sample data ──
+  const SAMPLE_LOG = `event_name = ad_impression eventMap = {country: US, revenue: 0.45, ad_unit_id: AU_12345, ad_type: rewarded, app_id: com.example.mobilegame, session_id: s_a1b2c3, fill_time_ms: 234, sdk_version: 7.3.1}`;
+
+  const SAMPLE_JSON = JSON.stringify({
+    event: "ad_impression",
+    timestamp: 1758779030120,
+    session_id: "s_a1b2c3",
+    device: { platform: "android", os_version: "12", model: "Pixel 3" },
+    ad: { unit_id: "AU_12345", type: "rewarded", campaign_id: "C_98765" },
+    metrics: { revenue: 0.45, country: "US", fill_time_ms: 234, sdk_version: "7.3.1" }
+  }, null, 2);
+
+  const SAMPLE_JIRA = {
+    title: '[Android] ad_impression event missing on Pixel 3 (Android 12)',
+    description: 'SDK sends ad_impression event but it does not appear in the event log. Reproduces consistently on Pixel 3 running Android 12 in release builds only.',
+    steps: '1. Install app with SDK v7.3.1\n2. Navigate to rewarded ad placement\n3. Complete full ad view\n4. Check logcat for ad_impression event',
+    actual: 'ad_impression event does not appear in logcat after completing ad view',
+    expected: 'ad_impression event fires with full eventMap: country, revenue, ad_unit_id, session_id, fill_time_ms'
+  };
+
+  // ── Fetch helper ──
+  async function fetchText(path) {
+    try {
+      const r = await fetch(path);
+      return await r.text();
+    } catch(e) {
+      return null;
+    }
+  }
+
+  // ── Per-tool injectors ──
+  async function injectLogSample(win, doc) {
+    const ta = doc.getElementById('logInput') || doc.querySelector('textarea');
+    if (!ta) return;
+    ta.value = SAMPLE_LOG;
+    if (typeof win.formatLog === 'function') win.formatLog();
+    else ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  async function injectEventSample(win, doc) {
+    const input = doc.getElementById('fileInput');
+    if (!input) return;
+    const content = await fetchText('demo-events.logcat');
+    if (!content) return;
+    const file = new File([content], 'demo-events.logcat', { type: 'text/plain' });
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    input.files = dt.files;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  async function injectCSVSample(win, doc) {
+    const csv = await fetchText('adQ example.csv');
+    if (!csv) return;
+    if (typeof win.parseAndDisplayCSV === 'function') {
+      win.parseAndDisplayCSV(csv);
+    } else {
+      const input = doc.getElementById('csvFileInput') || doc.querySelector('input[type="file"]');
+      if (!input) return;
+      const file = new File([csv], 'adQ example.csv', { type: 'text/csv' });
+      const dt = new DataTransfer();
+      dt.items.add(file);
+      input.files = dt.files;
+      const loadBtn = doc.getElementById('loadCsvButton');
+      if (loadBtn) loadBtn.click();
+    }
+  }
+
+  async function injectJSONSample(win, doc) {
+    const ta = doc.getElementById('jsonInput');
+    if (!ta) return;
+    ta.value = SAMPLE_JSON;
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  async function injectJiraSample(win, doc) {
+    for (const [id, val] of Object.entries(SAMPLE_JIRA)) {
+      const el = doc.getElementById(id);
+      if (el) el.value = val;
+    }
+  }
+
+  const INJECTORS = {
+    'logV.html':              injectLogSample,
+    'logV-v2.html':           injectLogSample,
+    'LogV-2.html':            injectLogSample,
+    'logV-Wsearch.html':      injectLogSample,
+    'logV-workers.html':      injectLogSample,
+    'eventExtractor.html':    injectEventSample,
+    'verify_advid.html':      injectCSVSample,
+    'verfiyAdvidWithButtons.html':  injectCSVSample,
+    'verfiyAdvidWithImgHover.html': injectCSVSample,
+    'jsonV.html':             injectJSONSample,
+    'JTformatter.html':       injectJiraSample,
+    'JTformatter-2.html':     injectJiraSample,
+  };
+
+  // ── Preview Panel ──
+  let _currentSrc = '';
+
+  function openPreview(src, name) {
+    _currentSrc = src;
+    document.getElementById('preview-title').textContent = name;
+    document.getElementById('preview-open-link').href = src;
+    document.getElementById('preview-loading').style.opacity = '1';
+    document.getElementById('preview-iframe').src = src;
+    document.getElementById('preview-panel').classList.add('open');
+    document.getElementById('preview-backdrop').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePreview() {
+    document.getElementById('preview-panel').classList.remove('open');
+    document.getElementById('preview-backdrop').classList.remove('open');
+    document.body.style.overflow = '';
+    setTimeout(() => { document.getElementById('preview-iframe').src = 'about:blank'; }, 300);
+  }
+
+  function hideLoading() {
+    const iframe = document.getElementById('preview-iframe');
+    if (!iframe.src || iframe.src === 'about:blank') return;
+    document.getElementById('preview-loading').style.opacity = '0';
+    const filename = _currentSrc.split('/').pop();
+    const injector = INJECTORS[filename];
+    if (injector) {
+      setTimeout(() => {
+        try { injector(iframe.contentWindow, iframe.contentDocument); }
+        catch(e) { console.warn('Demo injection failed:', e); }
+      }, 150);
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closePreview();
+      closeScript();
+    }
+  });
+
+  // ── Script Modal ──
+  const PAC_RAW = document.getElementById('pac-raw').textContent;
+
+  function syntaxHighlight(text) {
+    const KEYWORDS = /\b(if|then|fi|else|elif|for|while|do|done|case|esac|in|function|local|return|exit)\b/g;
+    const BUILTINS = /\b(echo|read|eval|sleep|printf|command|source|export|shift|set|unset|trap|break|continue)\b/g;
+
+    return text.split('\n').map(line => {
+      let esc = line
+        .replace(/&/g,'&amp;')
+        .replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;');
+
+      // shebang
+      if (esc.startsWith('#!')) return `<span class="sh-shebang">${esc}</span>`;
+      // full-line comment
+      if (/^\s*#/.test(esc)) return `<span class="sh-comment">${esc}</span>`;
+
+      // inline comment (after code)
+      esc = esc.replace(/(#.*)$/, '<span class="sh-comment">$1</span>');
+
+      // strings "..."
+      esc = esc.replace(/"([^"]*)"/g, '"<span class="sh-string">$1</span>"');
+
+      // keywords
+      esc = esc.replace(KEYWORDS, '<span class="sh-keyword">$1</span>');
+
+      // builtins (only outside already-replaced spans — best-effort)
+      esc = esc.replace(BUILTINS, '<span class="sh-builtin">$1</span>');
+
+      // variables $VAR ${VAR}
+      esc = esc.replace(/(\$\{[^}]+\}|\$[A-Z_a-z][A-Z_a-z0-9]*)/g,
+                        '<span class="sh-var">$1</span>');
+
+      return esc;
+    });
+  }
+
+  function openScript() {
+    const lines = syntaxHighlight(PAC_RAW.trim());
+    const html = lines.map((l, i) =>
+      `<div class="code-line"><span class="ln">${i+1}</span><span class="lc">${l}</span></div>`
+    ).join('');
+    document.getElementById('code-block').innerHTML = html;
+    document.getElementById('script-modal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeScript() {
+    document.getElementById('script-modal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function handleModalClick(e) {
+    if (e.target === document.getElementById('script-modal')) closeScript();
+  }
+
+  // Show file:// warning banner
+  if (location.protocol === 'file:') {
+    document.getElementById('file-banner').style.display = 'block';
+  }
+
+  function copyScript() {
+    navigator.clipboard.writeText(PAC_RAW.trim()).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2000);
+    });
+  }
+</script>
+
+</body>
+</html>

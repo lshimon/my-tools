@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>📄 Logcat Viewer</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #fff;
+      color: #000;
+      padding: 10px;
+    }
+    body.dark {
+      background: #1e1e1e;
+      color: #eee;
+    }
+    .controls, .filters, .saved-section, .export-section {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+    }
+    label { cursor: pointer; }
+    h2 { margin: 0; }
+    button { font-size: 12px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+      table-layout: fixed;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 4px;
+      vertical-align: top;
+      font-size: 12px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    th { background: #f0f0f0; }
+    body.dark th { background: #333; }
+    
+    .sortable {
+      cursor: pointer;
+      user-select: none;
+    }
+    .sortable:hover {
+      background-color: #e0e0e0;
+    }
+    body.dark .sortable:hover {
+      background-color: #444;
+    }
+    .sort-arrow {
+      margin-left: 5px;
+      display: inline-block;
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+    }
+    .sort-arrow.asc {
+      border-bottom: 5px solid #333;
+    }
+    .sort-arrow.desc {
+      border-top: 5px solid #333;
+    }
+    body.dark .sort-arrow.asc { border-bottom-color: #eee; }
+    body.dark .sort-arrow.desc { border-top-color: #eee; }
+    
+    .message-cell {
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    #searchInput {
+      padding: 4px;
+      font-size: 14px;
+      width: 400px;
+    }
+
+    /* Colors */
+    tr.INFO { background: #e6f7ff; }
+    tr.WARN { background: #fffacc; } 
+    tr.ERROR { background: #ffe6e6; } 
+    tr.DEBUG { background: #e6ffed; } 
+    tr.VERBOSE { background: #efefef; } 
+    body.dark tr.INFO { background: #1a3a4a; }
+    body.dark tr.WARN { background: #665500; }
+    body.dark tr.ERROR { background: #552222; }
+    body.dark tr.DEBUG { background: #1c3b26; } 
+    body.dark tr.VERBOSE { background: #282828; }
+    .highlight-0 { background-color: #ffff00; color: #000; }
+    .highlight-1 { background-color: #ffb366; color: #000; }
+    .highlight-2 { background-color: #99ff99; color: #000; }
+    .highlight-3 { background-color: #66ccff; color: #000; }
+    .highlight-4 { background-color: #ff99cc; color: #000; }
+    .highlight-5 { background-color: #ccccff; color: #000; }
+  </style>
+</head>
+<body>
+  <div class="controls">
+    <h2>📄 Logcat Viewer</h2>
+    <input type="file" id="fileInput" />
+    <label><input type="checkbox" id="darkToggle"> Dark mode</label>
+  </div>
+  <div class="filters">
+    <input type="text" id="searchInput" placeholder="Search logs..." />
+    <div id="levelFilters">
+      <label title="Verbose"><input type="checkbox" value="VERBOSE"> V</label>
+      <label title="Debug"><input type="checkbox" value="DEBUG"> D</label>
+      <label title="Info"><input type="checkbox" value="INFO"> I</label>
+      <label title="Warn"><input type="checkbox" value="WARN"> W</label>
+      <label title="Error"><input type="checkbox" value="ERROR"> E</label>
+    </div>
+  </div>
+  <div class="saved-section">
+    <label for="savedFilters">Saved Filters:</label>
+    <select id="savedFilters"></select>
+    <button id="saveFilterBtn">Save</button>
+    <button id="deleteFilterBtn">Delete</button>
+    <button id="clearFilterBtn">Clear / Reset</button>
+  </div>
+  <div class="export-section">
+    <button id="exportCsvBtn">Export to CSV</button>
+    <label><input type="checkbox" id="exportFilteredCheckbox"> Export filtered view only</label>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th class="sortable" data-sort-key="ts" style="width: 180px;">Time <span class="sort-arrow"></span></th>
+        <th style="width: 60px;">PID</th>
+        <th style="width: 60px;">TID</th>
+        <th style="width: 80px;">Level</th>
+        <th style="width: 150px;">Tag</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody id="logBody"></tbody>
+  </table>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- DOM Elements ---
+      const fileInput = document.getElementById('fileInput');
+      const logBody = document.getElementById('logBody');
+      const searchInput = document.getElementById('searchInput');
+      const levelFilters = document.querySelectorAll('#levelFilters input');
+      const darkToggle = document.getElementById('darkToggle');
+      const savedFiltersSelect = document.getElementById('savedFilters');
+      const saveFilterBtn = document.getElementById('saveFilterBtn');
+      const deleteFilterBtn = document.getElementById('deleteFilterBtn');
+      const clearFilterBtn = document.getElementById('clearFilterBtn');
+      const exportCsvBtn = document.getElementById('exportCsvBtn');
+      const exportFilteredCheckbox = document.getElementById('exportFilteredCheckbox');
+      const timeHeader = document.querySelector('th[data-sort-key="ts"]');
+      
+      // --- State & Constants ---
+      let allLogEntries = []; 
+      let sortState = { key: 'ts', direction: 'asc' };
+      const FILTERS_STORAGE_KEY = 'logViewerSavedFilters';
+
+      // --- File Loading ---
+      fileInput.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = e => {
+          try {
+            const root = JSON.parse(e.target.result);
+            allLogEntries = (root.logcatMessages || []).map(obj => {
+              const h = obj.header || {};
+              return {
+                ts: h.timestamp ? new Date(h.timestamp.seconds * 1000 + Math.floor(h.timestamp.nanos / 1e6)).toISOString() : 'N/A',
+                pid: h.pid || '-',
+                tid: h.tid || '-',
+                logLevel: (h.logLevel || 'UNKNOWN').toUpperCase(),
+                tag: h.tag || '-',
+                msg: (obj.message || '').replace(/\\u003d/g, '=')
+              };
+            });
+            sortAndRender();
+          } catch (err) {
+              console.error("Failed to parse log file.", err);
+              alert("Error: Could not parse file.");
+          }
+        };
+        reader.readAsText(file);
+      });
+
+      // --- Sorting Logic ---
+      function sortAndRender() {
+        const { key, direction } = sortState;
+        allLogEntries.sort((a, b) => {
+          const valA = a[key] || '';
+          const valB = b[key] || '';
+          const comparison = valA.localeCompare(valB);
+          return direction === 'asc' ? comparison : -comparison;
+        });
+        updateSortArrow();
+        renderTable();
+      }
+      
+      function updateSortArrow() {
+          document.querySelectorAll('.sort-arrow').forEach(arrow => arrow.className = 'sort-arrow');
+          const arrow = timeHeader.querySelector('.sort-arrow');
+          if (arrow) {
+              arrow.classList.add(sortState.direction);
+          }
+      }
+
+      timeHeader.addEventListener('click', () => {
+          sortState.direction = sortState.direction === 'asc' ? 'desc' : 'asc';
+          sortAndRender();
+      });
+
+      // --- Rendering Logic ---
+      function renderTable() {
+        const searchTerms = searchInput.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
+        const selectedLevels = Array.from(levelFilters).filter(cb => cb.checked).map(cb => cb.value);
+        const filteredEntries = allLogEntries.filter(entry => {
+          const fulltext = `${entry.ts} ${entry.pid} ${entry.tid} ${entry.logLevel} ${entry.tag} ${entry.msg}`.toLowerCase();
+          const isSearchMatch = searchTerms.length === 0 || searchTerms.some(term => fulltext.includes(term));
+          const isLevelMatch = selectedLevels.length === 0 || selectedLevels.includes(entry.logLevel);
+          return isSearchMatch && isLevelMatch;
+        });
+
+        logBody.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+        for (const entry of filteredEntries) {
+          const tr = document.createElement('tr');
+          tr.className = entry.logLevel;
+          let msgHTML = escapeHTML(entry.msg);
+          if (searchTerms.length > 0) {
+            searchTerms.forEach((term, i) => {
+              const regex = new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+              msgHTML = msgHTML.replace(regex, match => `<span class="highlight-${i % 6}">${match}</span>`);
+            });
+          }
+          tr.innerHTML = `<td>${entry.ts}</td><td>${entry.pid}</td><td>${entry.tid}</td><td>${entry.logLevel}</td><td>${escapeHTML(entry.tag)}</td><td class="message-cell">${msgHTML}</td>`;
+          tr.cells[4].title = entry.tag;
+          fragment.appendChild(tr);
+        }
+        logBody.appendChild(fragment);
+      }
+      
+      // --- Event Listeners and Other Functions ---
+      darkToggle.addEventListener('change', e => document.body.classList.toggle('dark', e.target.checked));
+      searchInput.addEventListener('input', () => { savedFiltersSelect.value = ''; renderTable(); });
+      levelFilters.forEach(cb => cb.addEventListener('change', () => { savedFiltersSelect.value = ''; renderTable(); }));
+      
+      // Saved Filters
+      function getSavedFilters() { return JSON.parse(localStorage.getItem(FILTERS_STORAGE_KEY)) || {}; }
+      function populateSavedFilters() { const filters = getSavedFilters(); savedFiltersSelect.innerHTML = '<option value="">-- Select a filter --</option>'; for (const name in filters) { const option = document.createElement('option'); option.value = name; option.textContent = name; savedFiltersSelect.appendChild(option); } }
+      function clearAllFilters() { searchInput.value = ''; levelFilters.forEach(cb => cb.checked = false); savedFiltersSelect.value = ''; renderTable(); }
+      saveFilterBtn.addEventListener('click', () => { const name = prompt("Enter a name for this filter:"); if (!name || !name.trim()) return; const filters = getSavedFilters(); filters[name] = { searchText: searchInput.value, levels: Array.from(levelFilters).filter(cb => cb.checked).map(cb => cb.value) }; localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters)); populateSavedFilters(); savedFiltersSelect.value = name; });
+      deleteFilterBtn.addEventListener('click', () => { const name = savedFiltersSelect.value; if (!name) { alert("Please select a filter to delete."); return; } if (confirm(`Are you sure you want to delete the filter "${name}"?`)) { const filters = getSavedFilters(); delete filters[name]; localStorage.setItem(FILTERS_STORAGE_KEY, JSON.stringify(filters)); populateSavedFilters(); } });
+      savedFiltersSelect.addEventListener('change', () => { const name = savedFiltersSelect.value; if (!name) { clearAllFilters(); return; } const filters = getSavedFilters(); const settings = filters[name]; if (settings) { searchInput.value = settings.searchText; levelFilters.forEach(cb => { cb.checked = settings.levels.includes(cb.value); }); renderTable(); } });
+      clearFilterBtn.addEventListener('click', clearAllFilters);
+      
+      // Export
+      function escapeCsvField(field) { if (field === null || field === undefined) { return ''; } const str = String(field); if (str.includes(',') || str.includes('"') || str.includes('\n')) { const escapedStr = str.replace(/"/g, '""'); return `"${escapedStr}"`; } return str; }
+      exportCsvBtn.addEventListener('click', () => {
+        let rowsToExport;
+        const headers = ["Time", "PID", "TID", "Level", "Tag", "Message"];
+        if (exportFilteredCheckbox.checked) {
+          // Get data from the currently rendered (and filtered) DOM rows
+          rowsToExport = Array.from(logBody.rows).map(tr => Array.from(tr.cells).map(td => td.textContent));
+        } else {
+          // Get data from the full, unfiltered data array
+          if (allLogEntries.length === 0) { alert("Please load a log file first."); return; }
+          rowsToExport = allLogEntries.map(entry => [entry.ts, entry.pid, entry.tid, entry.logLevel, entry.tag, entry.msg]);
+        }
+        let csvContent = headers.map(escapeCsvField).join(",") + "\n";
+        rowsToExport.forEach(rowArray => {
+          csvContent += rowArray.map(escapeCsvField).join(",") + "\n";
+        });
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", "logcat-export.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+
+      // Helper
+      function escapeHTML(str) { return str ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;') : ''; }
+
+      // Initial Load
+      populateSavedFilters();
+      updateSortArrow();
+    });
+  </script>
+</body>
+</html>

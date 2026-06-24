@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin-bottom: 10px;
+        }
+        textarea:focus {
+            outline: 2px solid #007bff;
+        }
+        input {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        input:focus {
+            outline: 2px solid #007bff;
+        }
+        .log-container {
+            display: flex;
+            flex-direction: column;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        mark {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .clear-btn {
+            display: inline-block;
+            margin-bottom: 5px;
+            padding: 5px 10px;
+            font-size: 12px;
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #333;
+        }
+        .clear-btn:hover {
+            background-color: #ddd;
+        }
+        .control-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Log Formatter</h2>
+    
+    <!-- Controls above textarea -->
+    <div class="control-container">
+        <button class="clear-btn" onclick="clearLogInput()">Clear</button>
+    </div>
+
+    <textarea id="logInput" placeholder="Paste your log here..." oninput="cleanInput()"></textarea>
+    <input id="searchInput" type="text" oninput="searchLog()" placeholder="Enter text to search...">
+
+    <div id="logOutput" class="log-container">
+        <table id="formattedLog">
+            <thead>
+                <tr>
+                    <th>Key</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Formatted log will be inserted here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function cleanInput() {
+            const logInput = document.getElementById("logInput");
+            // Trim spaces from the input and format the log
+            logInput.value = logInput.value.trim();
+            formatLog();
+        }
+
+        function formatLog() {
+            const input = document.getElementById("logInput").value.trim(); // Trim content
+            const tableBody = document.querySelector("#formattedLog tbody");
+
+            // Clear previous formatted log
+            tableBody.innerHTML = "";
+
+            if (!input) {
+                return; // If input is empty, stop processing
+            }
+
+            // Separate the log into its components
+            const [eventNamePart, eventMapPartRaw] = input.split("eventMap = {");
+
+            if (eventNamePart) {
+                const [key, value] = eventNamePart.split("=", 2);
+                tableBody.appendChild(createTableRow(key.trim(), value.trim()));
+            }
+
+            if (eventMapPartRaw) {
+                // Process and format eventMap
+                const eventMapContent = eventMapPartRaw.trim().slice(0, -1); // Remove trailing '}'
+                const properties = eventMapContent.split(", ");
+
+                for (const property of properties) {
+                    let key, value;
+                    if (property.includes(": ")) {
+                        // Handle colon-separated key-value pairs
+                        [key, value] = property.split(": ", 2);
+                    } else {
+                        // Handle equal-separated key-value pairs
+                        [key, value] = property.split("=", 2);
+                    }
+                    tableBody.appendChild(createTableRow(key.trim(), value ? value.trim() : ""));
+                }
+            }
+        }
+
+        function createTableRow(key, value) {
+            const row = document.createElement("tr");
+            const keyCell = document.createElement("td");
+            const valueCell = document.createElement("td");
+
+            keyCell.textContent = key;
+            valueCell.textContent = value;
+
+            row.appendChild(keyCell);
+            row.appendChild(valueCell);
+
+            return row;
+        }
+
+        function searchLog() {
+            const searchTerm = document.getElementById("searchInput").value.trim().toLowerCase();
+            const rows = document.querySelectorAll("#formattedLog tbody tr");
+            let hasMatches = false; // Track if any row matches
+
+            rows.forEach(row => {
+                const keyCell = row.cells[0];
+                const valueCell = row.cells[1];
+
+                // Reset visibility and remove existing highlights
+                row.style.display = ""; // Show rows by default
+                keyCell.innerHTML = keyCell.textContent;
+                valueCell.innerHTML = valueCell.textContent;
+
+                if (searchTerm) {
+                    const keyMatches = keyCell.textContent.toLowerCase().includes(searchTerm);
+                    const valueMatches = valueCell.textContent.toLowerCase().includes(searchTerm);
+
+                    if (keyMatches || valueMatches) {
+                        hasMatches = true; // At least one match found
+                        keyCell.innerHTML = highlightMatches(keyCell.textContent, searchTerm);
+                        valueCell.innerHTML = highlightMatches(valueCell.textContent, searchTerm);
+                    } else {
+                        row.style.display = "none"; // Hide rows without matches
+                    }
+                }
+            });
+
+            displayErrorIfNoMatches(hasMatches, searchTerm);
+        }
+
+        function highlightMatches(text, searchTerm) {
+            const regex = new RegExp(searchTerm, "gi");
+            return text.replace(regex, match => `<mark>${match}</mark>`);
+        }
+
+        function displayErrorIfNoMatches(hasMatches, searchTerm) {
+            const logOutput = document.getElementById("logOutput");
+            const errorElementId = "searchError";
+
+            // Remove existing error message
+            const existingError = document.getElementById(errorElementId);
+            if (existingError) {
+                existingError.remove();
+            }
+
+            if (searchTerm && !hasMatches) {
+                const errorMessage = document.createElement("div");
+                errorMessage.id = errorElementId;
+                errorMessage.className = "error-message";
+                errorMessage.textContent = "No results found for your search.";
+                logOutput.appendChild(errorMessage); // Add error below the log table
+            }
+        }
+
+        function clearLogInput() {
+            const logInput = document.getElementById("logInput");
+            logInput.value = ""; // Clear the textarea content
+            document.querySelector("#formattedLog tbody").innerHTML = ""; // Clear formatted log
+
+            // Remove error message
+            const existingError = document.getElementById("searchError");
+            if (existingError) {
+                existingError.remove();
+            }
+        }
+
+        // Automatically format the log when the text area content changes
+        document.getElementById("logInput").addEventListener("input", formatLog);
+    </script>
+</body>
+</html>

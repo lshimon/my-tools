@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ad Quality Data Viewer Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        #controls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #controls button,
+        #controls input[type="file"] {
+            margin: 5px;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #dataTable {
+            border-collapse: collapse;
+            width: 100%;
+            background-color: #fff;
+            table-layout: fixed;
+        }
+        #dataTable th, #dataTable td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+        #dataTable th {
+            background-color: #4CAF50;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            height: auto;
+            cursor: pointer;
+        }
+        #dataTable tr:nth-child(even){
+            background-color: #f2f2f2;
+        }
+        video, img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+        }
+        #dataTable td img {
+            cursor: zoom-in;
+            transition: transform 0.18s ease, z-index 0s;
+            position: relative;
+            z-index: 0;
+        }
+        #dataTable td img:hover {
+            transform: scale(4);
+            z-index: 999;
+            position: relative;
+        }
+        .checkbox-container {
+            text-align: center;
+        }
+        #dataTable td {
+            overflow: visible;
+        }
+        .app-name {
+            font-weight: bold;
+        }
+        .app-developer {
+            color: #555;
+        }
+        .app-description {
+            margin-top: 5px;
+        }
+        .app-icon {
+            float: left;
+            margin-right: 10px;
+            max-width: 60px;
+            max-height: 60px;
+        }
+        /* Pagination styles */
+        #pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+        #pagination button {
+            margin: 0 5px;
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        #pageInfo {
+            display: inline-block;
+            margin: 0 10px;
+        }
+        /* Sorting indicator styles */
+        .sortable:after {
+            content: " \25B2\25BC";
+            font-size: 12px;
+            color: white;
+            margin-left: 5px;
+        }
+        .multi-checkbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .multi-checkbox label {
+            margin-right: 10px;
+        }
+        /* Column Visibility Controls */
+        #columnVisibilityControls {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        #columnVisibilityControls label {
+            margin-right: 10px;
+            font-size: 14px;
+        }
+        #columnVisibilityControls input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        /* Back to Top button styles */
+        #backToTopButton {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            display: none;
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ad Quality Data Viewer Tool</h1>
+
+    <!-- Controls -->
+    <div id="controls">
+        <!-- Download Template button -->
+        <button id="downloadTemplateButton">Download Template CSV</button>
+
+        <!-- File input -->
+        <input type="file" id="csvFileInput" accept=".csv" />
+
+        <!-- Load CSV button -->
+        <button id="loadCsvButton">Load CSV</button>
+
+        <!-- Export button -->
+        <button id="exportCsvButton">Export CSV</button>
+    </div>
+
+    <!-- Column Visibility Controls -->
+    <div id="columnVisibilityControls">
+        <!-- Checkboxes will be added dynamically -->
+    </div>
+
+    <!-- Table to display data -->
+    <div style="overflow-x:auto;">
+        <table id="dataTable">
+            <!-- Table headers and body will be added dynamically -->
+        </table>
+    </div>
+
+    <!-- Pagination controls -->
+    <div id="pagination">
+        <button id="prevPageButton">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPageButton">Next</button>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button id="backToTopButton">Back to Top</button>
+
+    <!-- JavaScript code -->
+    <script>
+    // Global variables to store data and headers
+    let tableData = []; // This will store the data rows
+    let tableHeaders = []; // This will store the column headers
+    let inputFileName = 'export.csv'; // Default export file name
+    let currentPage = 1;
+    const rowsPerPage = 50;
+    let totalPages = 1;
+    let sortColumn = null;
+    let sortOrder = 'asc'; // 'asc' or 'desc'
+    const contentOptions = ['gambling', 'alcohol', 'violence', 'politics', 'drugs'];
+
+    // Global variable to store column visibility settings
+    let columnVisibility = {}; // Column visibility settings
+
+    document.getElementById('loadCsvButton').addEventListener('click', function () {
+        // Get the file
+        var fileInput = document.getElementById('csvFileInput');
+        var file = fileInput.files[0];
+        if (file) {
+            // Store the input file name
+            inputFileName = file.name;
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                var contents = e.target.result;
+                // Parse the CSV and display the data
+                parseAndDisplayCSV(contents);
+            };
+
+            reader.readAsText(file);
+        } else {
+            alert('Please select a CSV file first.');
+        }
+    });
+
+    async function parseAndDisplayCSV(contents) {
+        var parsedData = parseCSV(contents);
+        var headers = parsedData.headers;
+        var data = parsedData.rows;
+
+        // Store data in global variable
+        tableData = data;
+
+        // Adjust headers to match display, exclude 'manual_check_*' and content option columns
+        tableHeaders = headers.filter(h => !h.startsWith('manual_check_') && !contentOptions.includes(h) && h !== 'content_flags_custom');
+
+        // Reorder headers as per requirement
+        // Move 'scid' to the left of 'vidurls'
+        let scidIndex = tableHeaders.indexOf('scid');
+        if (scidIndex > -1) {
+            tableHeaders.splice(scidIndex, 1);
+            let vidurlsIndex = tableHeaders.indexOf('vidurls');
+            tableHeaders.splice(vidurlsIndex, 0, 'scid');
+        }
+
+        // Move 'icourls' to the right of 'imgurls'
+        let icourlsIndex = tableHeaders.indexOf('icourls');
+        if (icourlsIndex > -1) {
+            tableHeaders.splice(icourlsIndex, 1);
+            let imgurlsIndex = tableHeaders.indexOf('imgurls');
+            tableHeaders.splice(imgurlsIndex + 1, 0, 'icourls');
+        }
+
+        // Insert the new content flags column after 'icourls'
+        let contentFlagsIndex = tableHeaders.indexOf('icourls');
+        if (contentFlagsIndex > -1) {
+            tableHeaders.splice(contentFlagsIndex + 1, 0, 'content_flags');
+        } else {
+            tableHeaders.push('content_flags');
+        }
+
+        // Initialize column visibility to true for all headers (if not already set)
+        tableHeaders.forEach(header => {
+            if (columnVisibility[header] === undefined) {
+                columnVisibility[header] = true;
+            }
+        });
+
+        // Generate the column visibility controls
+        generateColumnVisibilityControls();
+
+        // Calculate total pages
+        totalPages = Math.ceil(tableData.length / rowsPerPage);
+        currentPage = 1;
+
+        // Generate the table
+        await generateTable();
+    }
+
+    function generateColumnVisibilityControls() {
+        const container = document.getElementById('columnVisibilityControls');
+        container.innerHTML = ''; // Clear existing controls
+
+        tableHeaders.forEach(header => {
+            const label = document.createElement('label');
+            label.style.marginRight = '10px';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.checked = columnVisibility[header] !== false; // Default to true if undefined
+
+            checkbox.addEventListener('change', function () {
+                columnVisibility[header] = this.checked;
+                generateTable(); // Regenerate table to reflect changes
+            });
+
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(header));
+            container.appendChild(label);
+        });
+    }
+
+    async function generateTable() {
+        var table = document.getElementById('dataTable');
+        table.innerHTML = ''; // Clear any existing data
+
+        // Adjust table headers based on visibility
+        const visibleHeaders = tableHeaders.filter(header => columnVisibility[header] !== false);
+
+        // Create header row
+        var thead = table.createTHead();
+        var headerRow = thead.insertRow(0);
+        visibleHeaders.forEach(header => {
+            var cell = document.createElement('th');
+            cell.textContent = header;
+            cell.className = 'sortable';
+            cell.dataset.column = header;
+            if (header !== 'content_flags') { // Only make sortable if not content_flags
+                cell.addEventListener('click', function () {
+                    var column = this.dataset.column;
+                    if (column !== 'content_flags') { // Do not sort by content_flags
+                        sortTableByColumn(column);
+                    }
+                });
+            }
+            headerRow.appendChild(cell);
+        });
+
+        // Create table body
+        var tbody = document.createElement('tbody');
+        table.appendChild(tbody);
+
+        // Get the data for the current page
+        var startIndex = (currentPage - 1) * rowsPerPage;
+        var endIndex = Math.min(startIndex + rowsPerPage, tableData.length);
+        var pageData = tableData.slice(startIndex, endIndex);
+
+        for (var i = 0; i < pageData.length; i++) {
+            var row = tbody.insertRow();
+
+            visibleHeaders.forEach(header => {
+                var cell = row.insertCell();
+                var value = pageData[i][header];
+
+                if (header === 'vidurls') {
+                    // Create video element
+                    if (value && value.trim() !== '') {
+                        var video = document.createElement('video');
+                        video.controls = true;
+                        var source = document.createElement('source');
+                        source.src = value;
+                        source.type = 'video/mp4';
+                        video.appendChild(source);
+                        cell.appendChild(video);
+                    }
+                } else if (header === 'ecurls' || header === 'imgurls' || header === 'icourls') {
+                    // Create image element
+                    if (value && value.trim() !== '') {
+                        var img = document.createElement('img');
+                        img.src = value;
+                        img.alt = 'Image';
+                        cell.appendChild(img);
+                    }
+                } else if (header === 'advid_production' || header === 'advid_control' || header === 'advid_test') {
+                    // Display advid and checkbox
+                    var container = document.createElement('div');
+
+                    var advidValue;
+                    // Create links to stores if platform is ios or android
+                    if (pageData[i]['platform'] === 'ios') {
+                        if (value && value.trim() !== '') {
+                            var link = document.createElement('a');
+                            link.href = 'https://apps.apple.com/us/app/id/' + value;
+                            link.target = '_blank';
+                            link.textContent = value;
+                            link.style.color = '#007AFF';
+                            link.style.textDecoration = 'none';
+                            advidValue = link;
+                        } else {
+                            advidValue = document.createTextNode(value + ' ');
+                        }
+                    } else if (pageData[i]['platform'] === 'android') {
+                        if (value && value.trim() !== '') {
+                            var link = document.createElement('a');
+                            link.href = 'https://play.google.com/store/apps/details?id=' + value;
+                            link.target = '_blank';
+                            link.textContent = value;
+                            link.style.color = '#3ddc84';
+                            link.style.textDecoration = 'none';
+                            advidValue = link;
+                        } else {
+                            advidValue = document.createTextNode(value + ' ');
+                        }
+                    } else {
+                        // For other platforms, just display the value
+                        advidValue = document.createTextNode(value + ' ');
+                    }
+
+                    container.appendChild(advidValue);
+
+                    // Create checkbox for manual_check
+                    var checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+
+                    // Determine the manual_check field name
+                    var manualCheckField = 'manual_check_' + header;
+
+                    checkbox.checked = pageData[i][manualCheckField];
+
+                    // Attach the data to checkbox for later reference
+                    checkbox.dataset.globalIndex = startIndex + i;
+                    checkbox.dataset.manualCheckField = manualCheckField;
+
+                    checkbox.addEventListener('change', function () {
+                        var index = this.dataset.globalIndex;
+                        var field = this.dataset.manualCheckField;
+                        tableData[index][field] = this.checked; // Update the global tableData
+                    });
+                    container.appendChild(checkbox);
+                    cell.appendChild(container);
+                } else if (header === 'content_flags') {
+                    // Create multi-choice checkboxes and custom input
+                    var container = document.createElement('div');
+                    container.className = 'multi-checkbox';
+                    contentOptions.forEach(option => {
+                        var label = document.createElement('label');
+                        var checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+
+                        // Initialize the content flags in the data if not present
+                        if (typeof pageData[i][option] === 'undefined') {
+                            pageData[i][option] = false;
+                        }
+
+                        checkbox.checked = pageData[i][option];
+
+                        // Attach data attributes for later reference
+                        checkbox.dataset.globalIndex = startIndex + i;
+                        checkbox.dataset.option = option;
+
+                        checkbox.addEventListener('change', function () {
+                            var index = this.dataset.globalIndex;
+                            var opt = this.dataset.option;
+                            tableData[index][opt] = this.checked; // Update the global tableData
+                        });
+
+                        label.appendChild(checkbox);
+                        label.appendChild(document.createTextNode(option));
+                        container.appendChild(label);
+                    });
+
+                    // Create input for custom content flag
+                    var customLabel = document.createElement('label');
+                    var customInput = document.createElement('input');
+                    customInput.type = 'text';
+                    customInput.placeholder = 'Other (please specify)';
+
+                    // Initialize value from pageData
+                    if (typeof pageData[i]['content_flags_custom'] === 'undefined') {
+                        pageData[i]['content_flags_custom'] = '';
+                    }
+                    customInput.value = pageData[i]['content_flags_custom'];
+
+                    // Attach data attributes
+                    customInput.dataset.globalIndex = startIndex + i;
+
+                    customInput.addEventListener('input', function () {
+                        var index = this.dataset.globalIndex;
+                        tableData[index]['content_flags_custom'] = this.value; // Update global tableData
+                    });
+
+                    customLabel.appendChild(document.createTextNode('Other: '));
+                    customLabel.appendChild(customInput);
+                    container.appendChild(customLabel);
+
+                    cell.appendChild(container);
+                } else if (header === 'app_details_advid_test' && pageData[i]['platform'] === 'ios') {
+                    // Fetch app details and display them
+                    if (pageData[i]['advid_test'] && pageData[i]['advid_test'].trim() !== '') {
+                        const appId = pageData[i]['advid_test'];
+                        cell.textContent = 'Loading...';
+                        fetchAppDetails(appId, cell);
+                    } else {
+                        cell.textContent = 'No App ID';
+                    }
+                } else {
+                    cell.textContent = value;
+                }
+            });
+        }
+
+        // Update pagination info
+        document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+    }
+
+    // Pagination controls
+    document.getElementById('prevPageButton').addEventListener('click', function () {
+        if (currentPage > 1) {
+            currentPage--;
+            generateTable();
+        }
+    });
+
+    document.getElementById('nextPageButton').addEventListener('click', function () {
+        if (currentPage < totalPages) {
+            currentPage++;
+            generateTable();
+        }
+    });
+
+    function sortTableByColumn(column) {
+        // Toggle sort order
+        if (sortColumn === column) {
+            sortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+        } else {
+            sortColumn = column;
+            sortOrder = 'asc';
+        }
+
+        // Perform sorting
+        tableData.sort(function (a, b) {
+            var valA = a[column];
+            var valB = b[column];
+
+            // Handle numbers
+            var numA = parseFloat(valA);
+            var numB = parseFloat(valB);
+            if (!isNaN(numA) && !isNaN(numB)) {
+                valA = numA;
+                valB = numB;
+            }
+
+            // Handle booleans
+            if (typeof valA === 'boolean' && typeof valB === 'boolean') {
+                valA = valA ? 1 : 0;
+                valB = valB ? 1 : 0;
+            }
+
+            if (valA < valB) {
+                return sortOrder === 'asc' ? -1 : 1;
+            } else if (valA > valB) {
+                return sortOrder === 'asc' ? 1 : -1;
+            } else {
+                return 0;
+            }
+        });
+
+        currentPage = 1;
+        generateTable();
+    }
+
+    // Function to fetch app details from Apple API
+    function fetchAppDetails(appId, cell) {
+        fetch(`https://itunes.apple.com/lookup?id=${appId}&country=us`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.resultCount > 0) {
+                    const appInfo = data.results[0];
+
+                    // Create elements to display app details
+                    const container = document.createElement('div');
+
+                    const icon = document.createElement('img');
+                    icon.src = appInfo.artworkUrl100;
+                    icon.className = 'app-icon';
+
+                    const name = document.createElement('div');
+                    name.className = 'app-name';
+                    name.textContent = appInfo.trackName;
+
+                    const developer = document.createElement('div');
+                    developer.className = 'app-developer';
+                    developer.textContent = `by ${appInfo.artistName}`;
+
+                    const description = document.createElement('div');
+                    description.className = 'app-description';
+                    description.textContent = appInfo.description.substring(0, 100) + '...';
+
+                    container.appendChild(icon);
+                    container.appendChild(name);
+                    container.appendChild(developer);
+                    container.appendChild(description);
+
+                    // Clear the cell and append the app details
+                    cell.textContent = '';
+                    cell.appendChild(container);
+                } else {
+                    cell.textContent = 'App not found';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching app details:', error);
+                cell.textContent = 'Error loading app details';
+            });
+    }
+
+    // Implement the 'Export CSV' functionality
+    document.getElementById('exportCsvButton').addEventListener('click', function () {
+        if (!tableData || !tableHeaders) {
+            alert('No data to export.');
+            return;
+        }
+        if (tableData.length === 0) {
+            alert('No data to export.');
+            return;
+        }
+
+        // Include all headers from data, including content options and manual_check fields
+        var exportHeaders = new Set();
+        tableData.forEach(row => {
+            Object.keys(row).forEach(key => exportHeaders.add(key));
+        });
+        exportHeaders = Array.from(exportHeaders);
+
+        // Ensure content_flags_custom is included
+        if (!exportHeaders.includes('content_flags_custom')) {
+            exportHeaders.push('content_flags_custom');
+        }
+
+        var csvContent = '';
+        csvContent += exportHeaders.join(',') + '\n';
+
+        tableData.forEach(function (row) {
+            var rowData = [];
+            exportHeaders.forEach(function (header) {
+                var value = row[header];
+                // Convert boolean to 'true' or 'false' strings
+                if (typeof value === 'boolean') {
+                    value = value.toString();
+                }
+                // Escape double quotes
+                if (typeof value === 'string' && value.includes('"')) {
+                    value = value.replace(/"/g, '""');
+                }
+                // If value contains a comma or line break, wrap it in quotes
+                if (value && (value.toString().includes(',') || value.toString().includes('\n') || value.toString().includes('"'))) {
+                    value = '"' + value + '"';
+                }
+                rowData.push(value);
+            });
+            csvContent += rowData.join(',') + '\n';
+        });
+
+        // Create the export file name derived from the input file name
+        var exportFileName = 'export_' + inputFileName;
+
+        // Create a Blob from the CSV and provide a download link
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        var link = document.createElement('a');
+        if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, exportFileName);
+        } else {
+            var url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = exportFileName;
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    });
+
+    // Implement 'Download Template CSV' functionality
+    document.getElementById('downloadTemplateButton').addEventListener('click', function () {
+        var templateCsvContent = [
+            ['scid', 'vidurls', 'ecurls', 'imgurls', 'icourls', 'platform', 'advid_production', 'advid_control', 'advid_test'],
+            ['scid1', 'https://www.example.com/video1.mp4', 'https://www.example.com/image1.jpg', 'https://www.example.com/img1.jpg', 'https://www.example.com/icon1.jpg', 'android', 'adv001', 'orig123', 'com.example.android.app'],
+            ['scid2', 'https://www.example.com/video2.mp4', 'https://www.example.com/image2.jpg', 'https://www.example.com/img2.jpg', 'https://www.example.com/icon2.jpg', 'ios', 'adv002', 'orig456', '1491074310']
+        ];
+
+        var csvContent = '';
+        templateCsvContent.forEach(function (rowArray) {
+            var row = rowArray.join(',');
+            csvContent += row + '\n';
+        });
+
+        // Create a Blob from the CSV and provide a download link
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        var link = document.createElement('a');
+        if (navigator.msSaveBlob) { // IE 10+
+            navigator.msSaveBlob(blob, 'template.csv');
+        } else {
+            var url = URL.createObjectURL(blob);
+            link.href = url;
+            link.download = 'template.csv';
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    });
+
+    // CSV parser that handles quoted fields
+    function parseCSV(text) {
+        var lines = text.split('\n').filter(function (line) {
+            return line.trim() !== '';
+        });
+
+        var headers = [];
+        var rows = [];
+
+        for (var i = 0; i < lines.length; i++) {
+            var line = lines[i];
+            var values = [];
+            var value = '';
+            var inQuotes = false;
+
+            for (var j = 0; j < line.length; j++) {
+                var char = line[j];
+
+                if (char === '"' && line[j + 1] === '"') {
+                    // Escaped quote
+                    value += '"';
+                    j++; // Skip the next quote
+                } else if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    values.push(value);
+                    value = '';
+                } else {
+                    value += char;
+                }
+            }
+            values.push(value);
+
+            if (i === 0) {
+                headers = values;
+                // Add 'manual_check' fields for advid columns if not present
+                ['advid_production', 'advid_control', 'advid_test'].forEach(advidField => {
+                    var manualCheckField = 'manual_check_' + advidField;
+                    if (!headers.includes(manualCheckField)) {
+                        headers.push(manualCheckField);
+                    }
+                });
+                // Add content options columns if not present
+                contentOptions.forEach(option => {
+                    if (!headers.includes(option)) {
+                        headers.push(option);
+                    }
+                });
+                // Add 'content_flags_custom' column if not present
+                if (!headers.includes('content_flags_custom')) {
+                    headers.push('content_flags_custom');
+                }
+                // Add 'app_details_advid_test' column if not present
+                if (!headers.includes('app_details_advid_test')) {
+                    headers.push('app_details_advid_test');
+                }
+            } else {
+                var obj = {};
+                for (var k = 0; k < headers.length; k++) {
+                    var header = headers[k];
+                    var val = values[k] !== undefined ? values[k] : '';
+                    // Parse 'manual_check' fields as boolean if possible
+                    if (header.startsWith('manual_check_') || contentOptions.includes(header)) {
+                        obj[header] = val.toLowerCase() === 'true';
+                    } else {
+                        obj[header] = val;
+                    }
+                }
+                // Ensure 'manual_check' fields exist
+                ['advid_production', 'advid_control', 'advid_test'].forEach(advidField => {
+                    var manualCheckField = 'manual_check_' + advidField;
+                    if (!(manualCheckField in obj)) {
+                        obj[manualCheckField] = false;
+                    }
+                });
+                // Ensure content options fields exist
+                contentOptions.forEach(option => {
+                    if (!(option in obj)) {
+                        obj[option] = false;
+                    }
+                });
+                // Ensure 'content_flags_custom' exists
+                if (!('content_flags_custom' in obj)) {
+                    obj['content_flags_custom'] = '';
+                }
+                // Ensure 'app_details_advid_test' exists
+                if (!('app_details_advid_test' in obj)) {
+                    obj['app_details_advid_test'] = '';
+                }
+                rows.push(obj);
+            }
+        }
+
+        return {
+            headers: headers,
+            rows: rows
+        };
+    }
+
+    // Back to Top Button Functionality
+
+    // Get the button
+    var backToTopButton = document.getElementById('backToTopButton');
+
+    // Show or hide the button when scrolling
+    window.onscroll = function() {
+        scrollFunction();
+    };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+            backToTopButton.style.display = "block";
+        } else {
+            backToTopButton.style.display = "none";
+        }
+    }
+
+    // When the user clicks on the button, scroll to the top of the document
+    backToTopButton.addEventListener('click', function() {
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    });
+    </script>
+</body>
+</html>
