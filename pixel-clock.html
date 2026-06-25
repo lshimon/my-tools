@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pixel Clock</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d1117;
+      color: #c9d1d9;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .clock-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .clock-display {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: clamp(56px, 12vw, 104px);
+      font-weight: 700;
+      color: #58a6ff;
+      letter-spacing: 6px;
+      text-shadow:
+        0 0 20px #388bfd60,
+        0 0 60px #388bfd30,
+        0 0 100px #388bfd15;
+      background: #080d14;
+      border: 1px solid #1f6feb40;
+      border-radius: 12px;
+      padding: 28px 48px;
+      text-align: center;
+      transition: text-shadow 0.3s;
+      user-select: none;
+    }
+
+    .date-display {
+      font-size: 13px;
+      color: #484f58;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    .label {
+      font-size: 9px;
+      color: #21262d;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    /* subtle scan-line overlay */
+    .clock-display::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.04) 2px,
+        rgba(0,0,0,0.04) 4px
+      );
+      border-radius: 12px;
+      pointer-events: none;
+    }
+    .clock-display { position: relative; }
+  </style>
+</head>
+<body>
+  <div class="clock-wrap">
+    <div class="clock-display" id="time">00:00:00</div>
+    <div class="date-display" id="date"></div>
+    <div class="label">pixel clock</div>
+  </div>
+
+  <script>
+    const timeEl = document.getElementById('time');
+    const dateEl = document.getElementById('date');
+    const DAYS   = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    function pad(n) { return String(n).padStart(2,'0'); }
+
+    function tick() {
+      const now = new Date();
+      timeEl.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+      dateEl.textContent = `${DAYS[now.getDay()]}, ${MONTHS[now.getMonth()]} ${now.getDate()} ${now.getFullYear()}`;
+    }
+
+    tick();
+    setInterval(tick, 1000);
+  </script>
+</body>
+</html>

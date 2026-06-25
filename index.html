@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shimon Leizerovich — QA Tools</title>
+  <title>Shimon Leizerovich — Tools</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -241,6 +241,48 @@
     }
     #copy-btn:hover { background: #30363d; color: #c9d1d9; }
     #copy-btn.copied { border-color: #3fb950; color: #3fb950; }
+
+    /* ── Web Apps hero card ── */
+    .card-hero {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      overflow: hidden;
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      min-height: 190px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .card-hero:hover { border-color: #388bfd40; box-shadow: 0 0 0 1px #388bfd20; }
+    .hero-preview {
+      background: #0d1117;
+      border-right: 1px solid #21262d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 24px;
+      overflow: hidden;
+    }
+    .hero-info {
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 9px;
+    }
+    .hero-info .card-title { font-size: 16px; }
+    .hero-info .card-desc  { font-size: 12.5px; max-width: 360px; }
+
+    /* Hero preview screenshots */
+    .hero-preview img {
+      width: 100%;
+      max-width: 420px;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid #21262d;
+      display: block;
+    }
   </style>
 </head>
 <body>
@@ -294,7 +336,7 @@
 </div>
 
 <header>
-  <h1>QA Internal Tools</h1>
+  <h1>Shimon Leizerovich — Tools</h1>
   <p>
     Built and iterated on during 3 years of QA work at ironSource / Unity (2022–2025).
     Each tool replaced a repetitive manual step, designed to run locally in any browser with no dependencies.
@@ -503,6 +545,54 @@
       <div class="btn-row">
         <button class="btn btn-primary" onclick="openScript()">⌨ View Script</button>
         <a class="btn btn-ghost" href="pac-tool.sh" target="_blank">↗ Raw</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════ WEB APPS ════ -->
+<section>
+  <h2>Web Apps</h2>
+  <div class="grid">
+
+    <!-- Pixel Clock hero -->
+    <div class="card-hero">
+      <div class="hero-preview">
+        <img src="img/pixel-clock-preview.png" alt="Pixel Clock screenshot" />
+      </div>
+      <div class="hero-info">
+        <div class="card-icon">🕐</div>
+        <div class="card-title">Pixel Clock</div>
+        <div class="card-desc">Real-time digital clock with a clean pixel-art aesthetic. Built with vanilla HTML/CSS/JS. Deployed on Vercel.</div>
+        <div class="card-meta">
+          <span class="tag tag-html">HTML</span>
+          <span class="tag tag-html">CSS</span>
+          <span class="tag tag-html">JS</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="openPreview('https://pixel-clock-rose.vercel.app/','Pixel Clock')">▶ Preview</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ClockLog hero -->
+    <div class="card-hero">
+      <div class="hero-preview">
+        <img src="img/clocklog-preview.png" alt="ClockLog screenshot" />
+      </div>
+      <div class="hero-info">
+        <div class="card-icon">⏱</div>
+        <div class="card-title">ClockLog</div>
+        <div class="card-desc">Activity timer with preset durations (5m, 10m, 25m), voice input, and export. Syncs across devices via Firebase. Used to track QA session time per task.</div>
+        <div class="card-meta">
+          <span class="tag tag-html">HTML</span>
+          <span class="tag tag-html">JS</span>
+          <span class="tag tag-v2">Firebase</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="openPreview('clocklog.html','ClockLog')">▶ Preview</button>
+        </div>
       </div>
     </div>
 
