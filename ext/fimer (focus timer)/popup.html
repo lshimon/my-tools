@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Precise Timer</title>
+  <style>
+    body { 
+      width: 300px; 
+      padding: 10px; 
+    }
+    #timer {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    input {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div id="timer">00:00:00</div>
+  <input type="number" id="durationInput" placeholder="Duration (minutes)">
+  <input type="number" id="warningInput" placeholder="Warning threshold (minutes)">
+  <input type="number" id="closingInput" placeholder="Closing threshold (minutes)">
+  <button id="startTimer">Start Timer</button>
+  <button id="stopTimer" style="display:none;">Stop Timer</button>
+
+  <script src="popup.js"></script>
+</body>
+</html>

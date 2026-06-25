@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JH Batch</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>JH Batch</h1>
+      <span id="count-badge" class="badge">0</span>
+    </header>
+
+    <section class="card current-card">
+      <div class="actions top-actions">
+        <button id="add-btn" class="btn primary wide" type="button" disabled>Add to Batch</button>
+        <button id="refresh-btn" class="btn secondary" type="button" title="Re-scan page">↻</button>
+      </div>
+      <div id="current-status" class="status muted">Loading…</div>
+      <div id="current-preview" class="preview hidden">
+        <div class="row">
+          <span class="label">Title:</span>
+          <span id="preview-title" class="value"></span>
+        </div>
+        <div class="row">
+          <span class="label">URL:</span>
+          <span id="preview-url" class="value url"></span>
+        </div>
+        <div class="row">
+          <span class="label">Preview:</span>
+          <span id="preview-body" class="value body"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card list-card">
+      <div class="section-title">
+        Saved jobs
+        <span id="list-count" class="muted small">(0)</span>
+      </div>
+      <ul id="job-list" class="job-list">
+        <li class="empty muted">No jobs saved yet.</li>
+      </ul>
+    </section>
+
+    <footer class="footer-actions">
+      <button id="copy-btn" class="btn primary wide" type="button" disabled>Copy All</button>
+      <button id="clear-btn" class="btn danger" type="button" disabled>Clear</button>
+    </footer>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

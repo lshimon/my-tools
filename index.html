@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shimon Leizerovich — QA Tools</title>
+  <title>Shimon Leizerovich — Tools & Projects</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -241,6 +241,124 @@
     }
     #copy-btn:hover { background: #30363d; color: #c9d1d9; }
     #copy-btn.copied { border-color: #3fb950; color: #3fb950; }
+
+    /* ── Section group label ── */
+    .section-group {
+      max-width: 880px; margin: 0 auto 20px;
+      font-size: 18px; font-weight: 600; color: #f0f6fc;
+      padding-top: 8px;
+    }
+    .section-group-desc {
+      max-width: 880px; margin: -12px auto 28px;
+      font-size: 13px; color: #8b949e; line-height: 1.5;
+    }
+
+    /* ── Extra tags ── */
+    .tag-ext  { color: #e3b341; border-color: #e3b34130; background: #e3b3410a; }
+    .tag-bot  { color: #3fb950; border-color: #3fb95030; background: #3fb9500a; }
+    .tag-live { color: #58a6ff; border-color: #58a6ff30; background: #58a6ff0a; }
+    .tag-pwa  { color: #d2a8ff; border-color: #d2a8ff30; background: #d2a8ff0a; }
+
+    /* ── CWS button ── */
+    .btn-chrome {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 500;
+      padding: 6px 12px; border-radius: 6px;
+      text-decoration: none; cursor: pointer;
+      border: 1px solid #e3b34150; background: #e3b3410d; color: #e3b341;
+      transition: background 0.12s, border-color 0.12s;
+    }
+    .btn-chrome:hover { background: #e3b34120; border-color: #e3b341; }
+
+    /* ── No-popup badge ── */
+    .no-preview-note {
+      font-size: 11px; color: #484f58; font-style: italic; margin-top: 4px;
+    }
+
+    /* ── Telegram mockup ── */
+    .tg-mock {
+      background: #1c2733; border-radius: 8px; padding: 10px;
+      margin-top: 6px; border: 1px solid #253544;
+    }
+    .tg-topbar {
+      font-size: 10px; font-weight: 600; color: #7cb9e8;
+      margin-bottom: 8px; display: flex; align-items: center; gap: 5px;
+    }
+    .tg-topbar-dot { width: 22px; height: 22px; border-radius: 50%; background: #2b5278; display:flex; align-items:center; justify-content:center; font-size:11px; }
+    .tg-row { display: flex; margin-bottom: 4px; }
+    .tg-bubble {
+      padding: 5px 9px; border-radius: 10px;
+      font-size: 10px; line-height: 1.5; color: #dde3ea;
+    }
+    .tg-row.user  { justify-content: flex-end; }
+    .tg-row.user  .tg-bubble { background: #2b5278; border-radius: 10px 2px 10px 10px; }
+    .tg-row.bot   .tg-bubble { background: #182533; border-radius: 2px 10px 10px 10px; }
+    .tg-cmds {
+      margin-top: 6px; display: flex; gap: 4px; flex-wrap: wrap;
+    }
+    .tg-cmd {
+      font-size: 9px; padding: 2px 7px; border-radius: 10px;
+      border: 1px solid #2b5278; color: #7cb9e8; background: #1c2733;
+    }
+
+    /* ── Kanban mockup ── */
+    .kb-mock {
+      display: flex; gap: 5px; margin-top: 6px;
+    }
+    .kb-col {
+      flex: 1; background: #0d1117; border-radius: 5px; padding: 5px;
+      min-width: 0;
+    }
+    .kb-head {
+      font-size: 8px; font-weight: 700; color: #8b949e;
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px;
+    }
+    .kb-task {
+      background: #161b22; border: 1px solid #21262d;
+      border-radius: 3px; padding: 4px 5px;
+      font-size: 9px; color: #c9d1d9; margin-bottom: 3px; line-height: 1.3;
+    }
+    .kb-task.wip  { border-left: 2px solid #f78166; }
+    .kb-task.done { color: #56d364; text-decoration: line-through; opacity: 0.6; }
+
+    /* ── Pixel Clock card: full-width hero ── */
+    .card-hero {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+      overflow: hidden;
+      min-height: 180px;
+    }
+    .card-hero .hero-preview {
+      background: #0a0a1a;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 36px; font-family: 'Menlo','Consolas',monospace;
+      color: #7bf; letter-spacing: 4px;
+      border-right: 1px solid #21262d;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-hero .hero-preview::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.08) 3px, rgba(0,0,0,0.08) 4px);
+      pointer-events: none;
+    }
+    .pixel-digit {
+      display: inline-block;
+      image-rendering: pixelated;
+      font-size: 32px;
+      font-weight: 900;
+      color: #00c8ff;
+      text-shadow: 0 0 12px #00c8ff80, 0 0 24px #00c8ff30;
+    }
+    .card-hero .hero-info {
+      padding: 20px 22px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
   </style>
 </head>
 <body>
@@ -294,13 +412,16 @@
 </div>
 
 <header>
-  <h1>QA Internal Tools</h1>
+  <h1>Shimon Leizerovich — Tools & Projects</h1>
   <p>
-    Built and iterated on during 3 years of QA work at ironSource / Unity (2022–2025).
-    Each tool replaced a repetitive manual step, designed to run locally in any browser with no dependencies.
+    A collection of tools, extensions, and bots I built over the years: QA automation from ironSource,
+    Chrome extensions, web apps, and live Telegram bots. Everything here solves a real problem I had.
   </p>
-  <span class="badge">17 tools &nbsp;·&nbsp; HTML / JS / Shell &nbsp;·&nbsp; Vanilla, zero frameworks</span>
+  <span class="badge">25+ tools &nbsp;·&nbsp; Chrome Extensions &nbsp;·&nbsp; Web Apps &nbsp;·&nbsp; Bots &nbsp;·&nbsp; Shell</span>
 </header>
+
+<div class="section-group">IronSource QA Tools</div>
+<div class="section-group-desc">Built and iterated on during 3 years of QA work at ironSource / Unity (2022–2025). Each tool replaced a repetitive manual step, designed to run locally in any browser with no dependencies.</div>
 
 <!-- ── LOG ANALYSIS ── -->
 <section>
@@ -503,6 +624,268 @@
       <div class="btn-row">
         <button class="btn btn-primary" onclick="openScript()">⌨ View Script</button>
         <a class="btn btn-ghost" href="pac-tool.sh" target="_blank">↗ Raw</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     CHROME EXTENSIONS
+════════════════════════════════════════════ -->
+
+<div class="section-group">Chrome Extensions</div>
+<div class="section-group-desc">Manifest V3 extensions built to fix real friction points — in Google Docs, Search Console, job boards, and daily browsing.</div>
+
+<section>
+  <h2>With Popup UI</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">🛍️</div>
+      <div class="card-title">eComDetector</div>
+      <div class="card-desc">
+        One click reveals the full tech stack of any e-commerce site: platform, payment provider, analytics, ad stack.
+        Built for competitor research and client audits.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-ext">Chrome Extension</span>
+        <span class="tag tag-html">MV3</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('ext/ecomdetector-extension/popup.html','eComDetector')">▶ Preview UI</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🗺️</div>
+      <div class="card-title">GSC Sitemap Submitter</div>
+      <div class="card-desc">
+        Submit multiple sitemaps to Google Search Console in bulk.
+        Paste a list, one per line — the extension loops through them and submits each automatically.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-ext">Chrome Extension</span>
+        <span class="tag tag-html">MV3</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('ext/GSC-Sitemap-Submitter-Repo/popup.html','GSC Sitemap Submitter')">▶ Preview UI</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">⏱️</div>
+      <div class="card-title">Fimer</div>
+      <div class="card-desc">
+        A persistent timer pinned to the top of every tab. Start a countdown, navigate anywhere — the clock follows you.
+        Built for time-boxing test sessions and focus work.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-ext">Chrome Extension</span>
+        <span class="tag tag-html">MV3</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('ext/fimer (focus timer)/popup.html','Fimer')">▶ Preview UI</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🎨</div>
+      <div class="card-title">Multi-Color Word Highlighter</div>
+      <div class="card-desc">
+        Highlight unlimited terms on any page. Each term gets a unique auto-generated color.
+        Whole-word matching, live highlight as you type. Works for Hebrew + English. Built for LinkedIn review sessions.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-ext">Chrome Extension</span>
+        <span class="tag tag-html">MV3</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('ext/word-highlighter-extension/popup.html','Word Highlighter')">▶ Preview UI</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📋</div>
+      <div class="card-title">JH Batch</div>
+      <div class="card-desc">
+        One-click job listing collector for batch AI evaluation. Extracts title, company, and URL from any job board page.
+        Outputs a clean batch prompt ready to paste into Claude.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-ext">Chrome Extension</span>
+        <span class="tag tag-html">MV3</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('ext/jh-batch-extension/popup.html','JH Batch')">▶ Preview UI</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section>
+  <h2>Content Scripts</h2>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">🔤</div>
+      <div class="card-title">Hebrew RTL Fixer</div>
+      <div class="card-desc">
+        Detects Hebrew text on any page and applies correct RTL directionality — without breaking English layout alongside it.
+        Fixes broken RTL on sites that don't handle bidirectional text properly.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-ext">Chrome Extension</span>
+        <span class="tag tag-html">Content Script</span>
+      </div>
+      <p class="no-preview-note">Runs injected into pages — no popup UI</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">🎙️</div>
+      <div class="card-title">Voice Typing Auto-Open</div>
+      <div class="card-desc">
+        Automatically opens the Voice Typing panel whenever a Google Doc loads.
+        Removes the 3-click routine for anyone who dictates regularly.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-ext">Chrome Extension</span>
+        <span class="tag tag-html">Content Script</span>
+      </div>
+      <p class="no-preview-note">Runs injected into pages — no popup UI</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     WEB APPS
+════════════════════════════════════════════ -->
+
+<div class="section-group">Web Apps</div>
+<div class="section-group-desc">Standalone tools that run in the browser. No install, no backend.</div>
+
+<section>
+  <div class="grid">
+
+    <!-- Pixel Clock — hero card -->
+    <div class="card card-hero">
+      <div class="hero-preview">
+        <span class="pixel-digit">09</span>
+        <span style="color:#336;margin:0 6px;text-shadow:none;">:</span>
+        <span class="pixel-digit">41</span>
+        <span style="color:#336;margin:0 6px;text-shadow:none;">:</span>
+        <span class="pixel-digit">07</span>
+      </div>
+      <div class="hero-info">
+        <div class="card-icon">🕹️</div>
+        <div class="card-title">Pixel Clock</div>
+        <div class="card-desc" style="flex:1;">
+          Ambient 8-bit clock for a second monitor. Full-screen, retro pixel aesthetic with a live countdown timer you can pin.
+          Deployed live on Vercel.
+        </div>
+        <div class="card-meta">
+          <span class="tag tag-html">HTML</span>
+          <span class="tag tag-live">Live</span>
+        </div>
+        <div class="btn-row">
+          <a class="btn btn-primary" href="https://pixel-clock-388mf6jk4-simon-ls-projects.vercel.app" target="_blank">↗ Open Live</a>
+          <button class="btn" onclick="openPreview('pixel-clock.html','Pixel Clock')">▶ Preview</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">⏰</div>
+      <div class="card-title">ClockLog</div>
+      <div class="card-desc">
+        Time tracker with a simple log view. Start/stop sessions, add notes, see your day broken down by task.
+        Built as a PWA — works offline, installable.
+      </div>
+      <div class="card-meta">
+        <span class="tag tag-html">HTML</span>
+        <span class="tag tag-pwa">PWA</span>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="openPreview('clocklog.html','ClockLog')">▶ Preview</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     BOTS & LIVE PROJECTS
+════════════════════════════════════════════ -->
+
+<div class="section-group">Bots & Live Projects</div>
+<div class="section-group-desc">Tools that run 24/7 — Telegram bots and shared task boards used by real people daily.</div>
+
+<section>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">🛒</div>
+      <div class="card-title">Shopping List Bot</div>
+      <div class="card-desc">
+        A shared Telegram bot for household shopping lists. Add items, check them off, clear the list — all from Telegram.
+        Built on Vercel + Supabase. Running live.
+      </div>
+      <div class="tg-mock">
+        <div class="tg-topbar">
+          <div class="tg-topbar-dot">🤖</div>
+          @ShoppingListBot
+        </div>
+        <div class="tg-row user"><div class="tg-bubble">/list</div></div>
+        <div class="tg-row bot"><div class="tg-bubble">
+          📋 Shopping list (5 items):<br>
+          ☑ 1. Milk<br>
+          ☑ 2. Bread<br>
+          ◻ 3. Eggs<br>
+          ◻ 4. Olive oil<br>
+          ◻ 5. Cherry tomatoes
+        </div></div>
+        <div class="tg-cmds">
+          <span class="tg-cmd">/add item</span>
+          <span class="tg-cmd">/done 3</span>
+          <span class="tg-cmd">/clear</span>
+        </div>
+      </div>
+      <div class="card-meta" style="margin-top:8px;">
+        <span class="tag tag-bot">Telegram Bot</span>
+        <span class="tag tag-live">Live</span>
+        <span class="tag tag-html">Vercel + Supabase</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">📌</div>
+      <div class="card-title">Family Task Board</div>
+      <div class="card-desc">
+        A shared Kanban board for household tasks. Cards move across columns, Telegram bot sends updates.
+        Built on Vercel + Supabase with a webhook integration.
+      </div>
+      <div class="kb-mock">
+        <div class="kb-col">
+          <div class="kb-head">📋 Todo</div>
+          <div class="kb-task">Fix kitchen light</div>
+          <div class="kb-task">Schedule dentist</div>
+        </div>
+        <div class="kb-col">
+          <div class="kb-head">⚡ In Progress</div>
+          <div class="kb-task wip">Repaint balcony</div>
+        </div>
+        <div class="kb-col">
+          <div class="kb-head">✅ Done</div>
+          <div class="kb-task done">Pay insurance</div>
+          <div class="kb-task done">Order birthday gift</div>
+        </div>
+      </div>
+      <div class="card-meta" style="margin-top:8px;">
+        <span class="tag tag-bot">Telegram Bot</span>
+        <span class="tag tag-live">Live</span>
+        <span class="tag tag-html">Vercel + Supabase</span>
       </div>
     </div>
 
